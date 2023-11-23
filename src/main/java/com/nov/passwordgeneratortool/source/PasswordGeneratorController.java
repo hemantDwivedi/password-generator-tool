@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PasswordGeneratorController {
     private PasswordGeneratorService passwordGeneratorService;
     @PostMapping
-    public ResponseEntity<String> generatePassword(@RequestBody Characters characters){
-        return ResponseEntity.ok(passwordGeneratorService.generatePassword(characters));
+    public String generatePassword(@RequestBody Characters characters){
+        return passwordGeneratorService.generatePassword(characters);
     }
 }

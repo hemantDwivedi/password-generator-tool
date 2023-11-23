@@ -10,10 +10,10 @@ import java.util.Random;
 public class PasswordGeneratorService {
 
     Logger logger = LoggerFactory.getLogger(getClass());
-    private static char[] storePassword;
     private static String passwordString = "";
 
     String generatePassword(Characters characters) {
+        String storePassword = "";
 
 
         String specialCharactersArray = "!@#$%^&*()-_+={}[]|\\:;\"'<>,.?/";
@@ -38,28 +38,24 @@ public class PasswordGeneratorService {
         if (characters.getSpecialCharacters()) {
             passwordString += specialCharactersArray;
         }
-        logger.info("final string {} and length is {}", passwordString, passwordString.length());
-
-        // Set length of password user's required
-        storePassword = new char[characters.getPasswordLength()];
-        logger.info("User required Password length {}", storePassword.length);
+        logger.info("final string: {} and Length:{}", passwordString, passwordString.length());
 
         // Get random character from 'passwordString' and store it into 'storePassword'
-        for (int i = 0; i < storePassword.length; i++) {
+        for (int i = 0; i < characters.getPasswordLength(); i++) {
             int randomNum = getRandomIntegerValue();
-            logger.info("Random Integer value {}", randomNum);
 
-            storePassword[i] = passwordString.charAt(randomNum);
+            storePassword += String.valueOf(passwordString.charAt(randomNum));
         }
 
-        logger.info("Generated Password {}", storePassword.toString());
-        return storePassword.toString();
+        logger.info("Generated Password {}", storePassword);
+
+        passwordString = "";
+        return storePassword;
     }
 
     private int getRandomIntegerValue() {
         Random random = new Random();
         int length = passwordString.length();
-
         return random.nextInt(length);
     }
 }
