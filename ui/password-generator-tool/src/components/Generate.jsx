@@ -1,100 +1,146 @@
-import { useState, useEffect } from "react"
+import 'bootstrap-icons/icons/copy.svg'
+import '../css/generate.css'
+import { Button, Collapse } from 'react-bootstrap'
+import { useState } from "react"
 import { generatePassword } from "../service/PasswordGeneratorApi"
 
 const Generate = () => {
+
+    const [open, setOpen] = useState(false);
 
     const [capitalAlphabet, setCapitalAlphabet] = useState(true)
     const [smallAlphabet, setSmallAlphaabet] = useState(true)
     const [numbers, setNumbers] = useState(true)
     const [specialCharacters, setSpecialCharacters] = useState(true)
-    const [passwordLength, setPasswordLength] = useState(12)
-    const [generatedPassword, setGeneratedPassword] = useState('')
+    const [passwordLength, setPasswordLength] = useState(8)
+    const [generatedPassword, setGeneratedPassword] = useState('eKs@4]sx3hq]')
 
-    useEffect (() => {
-        callGeneratePasswordApi()
-    }, '')
+    // useEffect (() => {
+    //     callGeneratePasswordApi()
+    // }, '')
 
-    function callGeneratePasswordApi(){
-        const characters = {capitalAlphabet, smallAlphabet, numbers, specialCharacters, passwordLength}
+    function callGeneratePasswordApi() {
+
+
+        const characters = { capitalAlphabet, smallAlphabet, numbers, specialCharacters, passwordLength }
 
         generatePassword(characters)
-        .then(response => setGeneratedPassword(response.data))
-        .catch(error => console.error(error))
+            .then(response => setGeneratedPassword(response.data))
+            .catch(error => console.error(error))
     }
 
     return (
         <div>
-            <div className="container mt-5">
-                <h1 className="text-capitalize text-center text-black-50 mb-3">strong password generator</h1>
-                <div className="row p-5">
-                    <div className="col-lg-11 border border-1 text-center border-dark rounded-5 p-2">{generatedPassword}</div>
-                    <button className="col-lg-1 btn btn-warning rounded-5 text-uppercase"><strong>copy</strong></button>
+            <div className="container d-flex align-items-center vh-100">
+                <div className="row w-75">
+                    <h1>Random Password Generator</h1>
+                    <p>
+                    Master Key: Instant Defense for Your Passwords!
+                    </p>
                 </div>
-                <div className="row bg-light p-5">
-                    <form action="">
-                        <div className="form-group mb-3 d-flex">
-                            <span className="">Password length:</span>
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="1-50"
-                                value={passwordLength}
-                                onChange={e => setPasswordLength(e.target.value)}
-                            />
+                <div className="row w-100">
+                    <div className="col-md-6 mx-auto">
+                        <div className="d-flex justify-content-between mb-4">
+                            <div className="fs-4 border-2 text-center border-dark rounded-3">{generatedPassword}</div>
+                            <button
+                                className="btn btn-light"
+                                onClick={() => { }}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-copy" viewBox="0 0 16 16">
+                                    <path fillRule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z" />
+                                </svg>
+                            </button>
                         </div>
-                        {/* <div className="form-group mb-3">
-                            <p>characters used:</p>
-                            <div className="form-check-inline">
-                                <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    name="capitalAlphabet"
-                                    value={capitalAlphabet}
-                                    onChange={() => setCapitalAlphabet(capitalAlphabet => !capitalAlphabet)}
-                                    checked
-                                />
-                                <label className="form-check-label">
-                                    ABC
-                                </label>
+                        <div className="">
+                            <div className="d-flex justify-content-between my-3">
+                                <div className="text-capitalize">
+                                    <label>password length:</label>
+                                </div>
+                                <div className="">
+                                    <label>{passwordLength}</label>
+                                </div>
                             </div>
-                            <div className="form-check-inline">
+                            <div className="mb-4">
                                 <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    name="smallAlphabet"
-                                    value={smallAlphabet}
-                                    onChange={() => setSmallAlphaabet(smallAlphabet => !smallAlphabet)}
+                                    className="w-100 custom-range"
+                                    type="range"
+                                    min={8}
+                                    max={50}
+                                    name="passwordLength"
+                                    value={passwordLength}
+                                    onChange={(e) => setPasswordLength(e.target.value)}
                                 />
-                                <label className="form-check-label">
-                                    abc
-                                </label>
                             </div>
-                            <div className="form-check-inline">
+                            <div className="d-flex justify-content-between">
+                                <div className="d-flex gap-2">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        name="capitalAlphabet"
+                                        value={capitalAlphabet}
+                                        onChange={() => setCapitalAlphabet(!capitalAlphabet)}
+                                    />
+                                    <label>
+                                        ABC
+                                    </label>
+                                </div>
+                                <div className="d-flex gap-2">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        name="smallAlphabet"
+                                        value={smallAlphabet}
+                                        onChange={() => setSmallAlphaabet(!smallAlphabet)}
+
+                                    />
+                                    <label>
+                                        abc
+                                    </label>
+                                </div>
+                                <div className="d-flex gap-2">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        name="numbers"
+                                        value={numbers}
+                                        onChange={() => setNumbers(!numbers)}
+                                    />
+                                    <label>
+                                        123
+                                    </label>
+                                </div>
+                                <div className="d-flex gap-2">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        name="specialCharacters"
+                                        value={specialCharacters}
+                                        onClick={() => setSpecialCharacters(!setSpecialCharacters)}
+                                    />
+                                    <label>
+                                        %&*$
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div className=' mt-4'>
+                                <label>Want to send this to email?</label>
+                            </div>
+                            <div className='mt-2 d-flex gap-2'>
                                 <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    name="numbers"
-                                    value={numbers}
-                                    onChange={() => setNumbers(numbers => !numbers)}
-                                />
-                                <label className="form-check-label">
-                                    123
-                                </label>
+                                    className='form-control'
+                                    type="email"
+                                    placeholder='Email Address...'
+                                    name='email' />
+                                <button className='btn btn-light'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-send" viewBox="0 0 16 16">
+                                        <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z" />
+                                    </svg>
+                                </button>
                             </div>
-                            <div className="form-check-inline">
-                                <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    name="specialCharacters"
-                                    value={specialCharacters}
-                                    onClick={() => setSpecialCharacters(specialCharacters => !setSpecialCharacters)}
-                                />
-                                <label className="form-check-label">
-                                    %&*$
-                                </label>
-                            </div>
-                        </div> */}
-                    </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
