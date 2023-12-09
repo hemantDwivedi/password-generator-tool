@@ -12,7 +12,7 @@ import lombok.Setter;
 public class Characters {
     private Boolean capitalAlphabet;
     private Boolean smallAlphabet;
-    private Boolean numbers;
-    private Boolean specialCharacters;
+    private Boolean number;
+    private Boolean specialCharacter;
     private Integer passwordLength;
 }

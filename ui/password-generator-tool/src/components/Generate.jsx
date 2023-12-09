@@ -1,29 +1,21 @@
-import 'bootstrap-icons/icons/copy.svg'
-import '../css/generate.css'
-import { Button, Collapse } from 'react-bootstrap'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { generatePassword } from "../service/PasswordGeneratorApi"
 
 const Generate = () => {
 
-    const [open, setOpen] = useState(false);
-
-    const [capitalAlphabet, setCapitalAlphabet] = useState(true)
-    const [smallAlphabet, setSmallAlphaabet] = useState(true)
-    const [numbers, setNumbers] = useState(true)
-    const [specialCharacters, setSpecialCharacters] = useState(true)
+    const [capitalAlphabet, setcapitalAlphabet] = useState(true)
+    const [smallAlphabet, setSmallAlphaabet] = useState(false)
+    const [number, setNumber] = useState(false)
+    const [specialCharacter, setSpecialCharacter] = useState(false)
     const [passwordLength, setPasswordLength] = useState(8)
     const [generatedPassword, setGeneratedPassword] = useState('eKs@4]sx3hq]')
 
-    // useEffect (() => {
-    //     callGeneratePasswordApi()
-    // }, '')
+    useEffect (() => {
+        const characters = { capitalAlphabet, smallAlphabet, number, specialCharacter, passwordLength }
+        callGeneratePasswordApi(characters)
+    }, [capitalAlphabet, smallAlphabet, number, specialCharacter, passwordLength])
 
-    function callGeneratePasswordApi() {
-
-
-        const characters = { capitalAlphabet, smallAlphabet, numbers, specialCharacters, passwordLength }
-
+    function callGeneratePasswordApi(characters) {
         generatePassword(characters)
             .then(response => setGeneratedPassword(response.data))
             .catch(error => console.error(error))
@@ -41,7 +33,7 @@ const Generate = () => {
                 <div className="row w-100">
                     <div className="col-md-6 mx-auto">
                         <div className="d-flex justify-content-between mb-4">
-                            <div className="fs-4 border-2 text-center border-dark rounded-3">{generatedPassword}</div>
+                            <div className="fs-4 border-2 text-truncate text-center border-dark rounded-3">{generatedPassword}</div>
                             <button
                                 className="btn btn-light"
                                 onClick={() => { }}
@@ -77,8 +69,8 @@ const Generate = () => {
                                         className="form-check-input"
                                         type="checkbox"
                                         name="capitalAlphabet"
-                                        value={capitalAlphabet}
-                                        onChange={() => setCapitalAlphabet(!capitalAlphabet)}
+                                        checked={capitalAlphabet}
+                                        onChange={(e) => setcapitalAlphabet(e.target.checked)}
                                     />
                                     <label>
                                         ABC
@@ -90,7 +82,7 @@ const Generate = () => {
                                         type="checkbox"
                                         name="smallAlphabet"
                                         value={smallAlphabet}
-                                        onChange={() => setSmallAlphaabet(!smallAlphabet)}
+                                        onChange={(e) => setSmallAlphaabet(e.target.checked)}
 
                                     />
                                     <label>
@@ -101,9 +93,9 @@ const Generate = () => {
                                     <input
                                         className="form-check-input"
                                         type="checkbox"
-                                        name="numbers"
-                                        value={numbers}
-                                        onChange={() => setNumbers(!numbers)}
+                                        name="number"
+                                        checked={number}
+                                        onChange={(e) => setNumber(e.target.checked)}
                                     />
                                     <label>
                                         123
@@ -113,9 +105,9 @@ const Generate = () => {
                                     <input
                                         className="form-check-input"
                                         type="checkbox"
-                                        name="specialCharacters"
-                                        value={specialCharacters}
-                                        onClick={() => setSpecialCharacters(!setSpecialCharacters)}
+                                        name="specialCharacter"
+                                        checked={specialCharacter}
+                                        onChange={(e) => setSpecialCharacter(e.target.checked)}
                                     />
                                     <label>
                                         %&*$
@@ -125,7 +117,7 @@ const Generate = () => {
                         </div>
                         <div>
                             <div className=' mt-4'>
-                                <label>Want to send this to email?</label>
+                                <label>Want to send this password to email?</label>
                             </div>
                             <div className='mt-2 d-flex gap-2'>
                                 <input

@@ -31,11 +31,11 @@ public class PasswordGeneratorService {
             passwordString += smallAlphabets;
         }
 
-        if (characters.getNumbers()) {
+        if (characters.getNumber()) {
             passwordString += numbers;
         }
 
-        if (characters.getSpecialCharacters()) {
+        if (characters.getSpecialCharacter()) {
             passwordString += specialCharactersArray;
         }
         logger.info("final string: {} and Length:{}", passwordString, passwordString.length());
