@@ -3,6 +3,7 @@ package com.nov.passwordgeneratortool.source;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Random;
 
@@ -22,7 +23,6 @@ public class PasswordGeneratorService {
         String numbers = "1234567890";
 
         // Check which characters combination password user wants
-
         if (characters.getCapitalAlphabet()) {
             passwordString += capitalAlphabets;
         }
@@ -38,7 +38,6 @@ public class PasswordGeneratorService {
         if (characters.getSpecialCharacter()) {
             passwordString += specialCharactersArray;
         }
-        logger.info("final string: {} and Length:{}", passwordString, passwordString.length());
 
         // Get random character from 'passwordString' and store it into 'storePassword'
         for (int i = 0; i < characters.getPasswordLength(); i++) {
@@ -47,10 +46,25 @@ public class PasswordGeneratorService {
             storePassword += String.valueOf(passwordString.charAt(randomNum));
         }
 
-        logger.info("Generated Password {}", storePassword);
-
         passwordString = "";
         return storePassword;
+    }
+
+    void sentToMail(SentMail sentMail){
+        if (sentMail.getTargetEmail() == null && sentMail.getMessage() == null) throw new RuntimeException("sentMail data is null");
+        String message = "Your Master Key\n" + sentMail.getMessage();
+
+        sentMail.setMessage(message);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        String res = restTemplate.postForObject(
+                "http://localhost:8000/api/v1/mail",
+                sentMail,
+                String.class
+        );
+
+        logger.info("Is mail sent successfully? {} ", (res != null && res.isEmpty()) ? "No" : "Yes");
     }
 
     private int getRandomIntegerValue() {
