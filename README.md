@@ -1,7 +1,8 @@
 # Password Generator Tool
 
 ## Description
-![Screenshot (112)](https://github.com/hemantDwivedi/password-generator-tool/assets/96649329/abc74f0d-5e11-443a-bbcc-d25fdce0db0e)
+![screencapture-localhost-3000-2023-12-11-19_31_32](https://github.com/hemantDwivedi/password-generator-tool/assets/96649329/1e667349-e622-4405-b9cc-1fc55334c6a1)
+
 
 The Password Generator Tool allows users to customize and generate strong passwords with ease. It supports the inclusion of uppercase letters, lowercase letters, numbers, and special characters. Additionally, users can conveniently send the generated password to their desired email address.
 
