@@ -2,3 +2,8 @@ body{
     background-color:white;
     color: black;
 }
+
+.sub-description{
+    color: gray;
+    font-size: 13px;
+}
