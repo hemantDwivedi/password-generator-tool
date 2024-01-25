@@ -1,9 +1,6 @@
 # Password Generator Tool 🔒
 
 ## Description
-![screencapture-localhost-3000-2023-12-11-19_31_32](https://github.com/hemantDwivedi/password-generator-tool/assets/96649329/1e667349-e622-4405-b9cc-1fc55334c6a1)
-
-
 The Password Generator Tool allows users to customize and generate strong passwords with ease. It supports the inclusion of uppercase letters, lowercase letters, numbers, and special characters. Additionally, users can conveniently send the generated password to their desired email address.
 
 ## Features  🛠️
@@ -12,15 +9,9 @@ The Password Generator Tool allows users to customize and generate strong passwo
 - Passwords can be generated with lengths up to 24 characters.
 - Send generated passwords to a specified email address.
 
-## Usage
-1. [Installation](#installation)
-3. [Sending Passwords via Email](#sending-passwords-via-email)
 
-## Installation
+### Fork & Clone the repo
 
-To get started with the Password Generator Tool, follow these steps:
-
-### Execute the following commands:
 #### Frontend Setup
 ```bash
 git clone https://github.com/hemantDwivedi/password-generator-tool.git
@@ -28,7 +19,7 @@ cd password-generator-tool
 cd ui/password-generator-tool
 npm install
 ```
-Open the frontend project in Visual Studio Code or your favourite IDE.
+Open the frontend project in vs Code or your favourite IDE.
 
 #### Backend Setup
 6. Open 'password-generator-tool' root folder in any IDE (IntelliJ recommanded)
@@ -51,7 +42,7 @@ Open the frontend project in Visual Studio Code or your favourite IDE.
 
 To send the generated password via email, follow these steps:
 
-1. Check the "Want to send this password to email?" checkbox in the UI.
+1. Check the "Send to an email?".
 2. An input box will appear.
 3. Enter your desired email address in the input box.
 4. Click the "Send" button.
@@ -62,12 +53,9 @@ The generated password will be sent to the specified email address. You can now 
 
 Note: Ensure your email address is accurate before hitting the "Send" button.
 
-## Contact
+## Contributors 🔽
 
-Find me 🔽
-
-- **LinkedIn:** [Hemant Dwivedi](https://www.linkedin.com/in/hemant-dwivedi-developer/)
-- **Twitter** [Hemant](https://twitter.com/ordinaryhemant)
+- **LinkedIn:** [Hemant Dwivedi](https://www.linkedin.com/in/hemant-dwivedi-developer/) **Twitter** [Hemant](https://twitter.com/ordinaryhemant)
 
 ## Acknowledgments
 
