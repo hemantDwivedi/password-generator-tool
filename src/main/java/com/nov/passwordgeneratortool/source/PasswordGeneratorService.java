@@ -22,7 +22,7 @@ public class PasswordGeneratorService {
         String smallAlphabets = "abcdefghijklmnopqrstuvwxyz";
         String numbers = "1234567890";
 
-        // Check which characters combination password user wants
+
         if (characters.getCapitalAlphabet()) {
             passwordString += capitalAlphabets;
         }
@@ -39,7 +39,6 @@ public class PasswordGeneratorService {
             passwordString += specialCharactersArray;
         }
 
-        // Get random character from 'passwordString' and store it into 'storePassword'
         for (int i = 0; i < characters.getPasswordLength(); i++) {
             int randomNum = getRandomIntegerValue();
 
