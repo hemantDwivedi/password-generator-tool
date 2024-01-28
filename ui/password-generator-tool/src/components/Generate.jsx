@@ -10,12 +10,28 @@ const Generate = () => {
     const [number, setNumber] = useState(false)
     const [specialCharacter, setSpecialCharacter] = useState(false)
     const [passwordLength, setPasswordLength] = useState(8)
-    const [generatedPassword, setGeneratedPassword] = useState('eKs@4]sx3hq]')
+    const [generatedPassword, setGeneratedPassword] = useState('Configure your password')
     const [sendToEmail, setSendToEmail] = useState(false)
     const [targetEmail, setTargetEmail] = useState('')
+    const [copy, setCopied] = useState('COPY')
+    const [settings, setSettings] = useState(0)
 
     useEffect(() => {
         const characters = { capitalAlphabet, smallAlphabet, number, specialCharacter, passwordLength }
+        var count = 0
+        if (characters.capitalAlphabet) {
+            count += 1
+        }
+        if (characters.smallAlphabet) {
+            count += 1
+        }
+        if (characters.number) {
+            count += 1
+        }
+        if (characters.specialCharacter) {
+            count += 1
+        }
+        setSettings(count)
         callGeneratePasswordApi(characters)
     }, [capitalAlphabet, smallAlphabet, number, specialCharacter, passwordLength])
 
@@ -40,16 +56,30 @@ const Generate = () => {
                     <Col lg={5}>
                         <div className="d-flex justify-content-between mb-4">
                             <div className="fs-3 border-2 text-truncate text-center border-0">{generatedPassword}</div>
-                            <label className="bg-success fw-bold rounded-4 py-2 px-4" style={{fontSize: "12px"}}>VERY STRONG</label>
+                            {settings == 4 && (
+                                <label className="fw-bold rounded-4 py-3 px-4 mb-2" style={{fontSize: "12px", color: "white", backgroundColor: "#006400"}}>VERY STRONG</label>
+                            )}
+                            {settings == 3 && (
+                                <label className="bg-success fw-bold rounded-4 py-3 px-4 mb-2" style={{fontSize: "12px", color: "white"}}>STRONG</label>
+                            )}
+                            {settings == 2 && (
+                                <label className="bg-warning fw-bold rounded-4 py-3 px-4 mb-2" style={{fontSize: "12px", color: "white"}}>GOOD</label>
+                            )}
+                            {settings <= 1 && (
+                                <label className="bg-danger fw-bold rounded-4 py-3 px-4 mb-2" style={{fontSize: "12px", color: "white"}}>POOR</label>
+                            )}
                         </div>
                         <button
                             className="btn btn-light shadow"
                             onClick={() => {
                                 navigator.clipboard.writeText(generatedPassword)
-                                alert("Copied!")
+                                setCopied("COPIED")
+                                setTimeout(function() {
+                                    setCopied("COPY")
+                                }, 1000);
                             }}
                         >
-                            <strong>COPY</strong>
+                            <strong>{copy}</strong>
                         </button>
                         <div className="d-flex justify-content-between my-3">
                             <div className="text-capitalize">
