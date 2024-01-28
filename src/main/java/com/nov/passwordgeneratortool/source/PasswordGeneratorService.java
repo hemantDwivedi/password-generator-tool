@@ -11,9 +11,9 @@ import java.util.Random;
 public class PasswordGeneratorService {
 
     Logger logger = LoggerFactory.getLogger(getClass());
-    private static String passwordString = "";
 
     String generatePassword(Characters characters) {
+        String charactersString = "";
         String storePassword = "";
 
 
@@ -24,33 +24,33 @@ public class PasswordGeneratorService {
 
 
         if (characters.getCapitalAlphabet()) {
-            passwordString += capitalAlphabets;
+            charactersString += capitalAlphabets;
         }
 
         if (characters.getSmallAlphabet()) {
-            passwordString += smallAlphabets;
+            charactersString += smallAlphabets;
         }
 
         if (characters.getNumber()) {
-            passwordString += numbers;
+            charactersString += numbers;
         }
 
         if (characters.getSpecialCharacter()) {
-            passwordString += specialCharactersArray;
+            charactersString += specialCharactersArray;
         }
 
-        for (int i = 0; i < characters.getPasswordLength(); i++) {
-            int randomNum = getRandomIntegerValue();
+        for (int i = 1; i < characters.getPasswordLength(); i++) {
+            int randomNum = getRandomIntegerValue(charactersString);
+            System.out.println("random number: " + randomNum);
 
-            storePassword += String.valueOf(passwordString.charAt(randomNum));
+            storePassword += String.valueOf(charactersString.charAt(randomNum));
         }
-
-        passwordString = "";
         return storePassword;
     }
 
-    void sentToMail(SentMail sentMail){
-        if (sentMail.getTargetEmail() == null && sentMail.getMessage() == null) throw new RuntimeException("sentMail data is null");
+    void sentToMail(SentMail sentMail) {
+        if (sentMail.getTargetEmail() == null && sentMail.getMessage() == null)
+            throw new RuntimeException("sentMail data is null");
         String message = "Your Master Key\n" + sentMail.getMessage();
 
         sentMail.setMessage(message);
@@ -66,9 +66,9 @@ public class PasswordGeneratorService {
         logger.info("Is mail sent successfully? {} ", (res != null && res.isEmpty()) ? "No" : "Yes");
     }
 
-    private int getRandomIntegerValue() {
+    private int getRandomIntegerValue(String charactersString) {
         Random random = new Random();
-        int length = passwordString.length();
+        int length = charactersString.length();
         return random.nextInt(length);
     }
 }
