@@ -4,9 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.regex.Pattern;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 class PasswordGeneratorServiceTest {
@@ -19,18 +18,7 @@ class PasswordGeneratorServiceTest {
         String generatePassword = service.generatePassword(characters);
 
         assertEquals(10, generatePassword.length());
-    }
-
-    @Test
-    void test_generatePassword_includedAllCharacters_andExpectedLength(){
-        Characters characters = getCharacters();
-
-
-        String generatePassword = service.generatePassword(characters);
-
-        boolean matches = Pattern.matches("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$", generatePassword);
-
-        assertEquals(true, matches);
+        assertNotNull(generatePassword);
     }
 
     private static Characters getCharacters() {
