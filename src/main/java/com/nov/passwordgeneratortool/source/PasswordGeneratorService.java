@@ -41,13 +41,48 @@ public class PasswordGeneratorService {
 
         for (int i = 1; i < characters.getPasswordLength(); i++) {
             int randomNum = getRandomIntegerValue(charactersString);
-            System.out.println("random number: " + randomNum);
 
             storePassword += String.valueOf(charactersString.charAt(randomNum));
         }
         return storePassword;
     }
 
+    public String strengthVerifier(String password) {
+         return getPasswordStrength(password);
+    }
+
+    private String getPasswordStrength(String password) {
+        String specialChars = "~`!@#$%^&*()-_=+\\|[{]};:'\",<.>/?";
+        char currentCharacter;
+        boolean numberPresent = false;
+        boolean upperCasePresent = false;
+        boolean lowerCasePresent = false;
+        boolean specialCharacterPresent = false;
+        boolean minLength = password.length() >= 8;
+
+        for (int i = 0; i < password.length(); i++) {
+            currentCharacter = password.charAt(i);
+            if (Character.isDigit(currentCharacter)) {
+                numberPresent = true;
+            } else if (Character.isUpperCase(currentCharacter)) {
+                upperCasePresent = true;
+            } else if (Character.isLowerCase(currentCharacter)) {
+                lowerCasePresent = true;
+            } else if (specialChars.contains(String.valueOf(currentCharacter))) {
+                specialCharacterPresent = true;
+            }
+        }
+
+        if (numberPresent && upperCasePresent && lowerCasePresent && specialCharacterPresent && minLength)
+            return "very strong";
+        else if (minLength && (upperCasePresent && lowerCasePresent) && (numberPresent || specialCharacterPresent))
+            return "strong";
+        else if (minLength && ((upperCasePresent && lowerCasePresent) || (numberPresent || specialCharacterPresent)))
+            return "good";
+        return "poor";
+    }
+
+    // Sending mail service project link: https://github.com/hemantDwivedi/mail-sending-service
     void sentToMail(SentMail sentMail) {
         if (sentMail.getTargetEmail() == null && sentMail.getMessage() == null)
             throw new RuntimeException("sentMail data is null");
