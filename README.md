@@ -47,13 +47,15 @@ To send the generated password via email, follow these steps:
 3. Enter your desired email address in the input box.
 4. Click the "Send" button.
 
+**Note**: You can find "Mail Sending Service" project here: [https://github.com/hemantDwivedi/mail-sending-service]
+
 ### Step 3: Password Sent
 
 The generated password will be sent to the specified email address. You can now access your secure password directly from your email inbox.
 
 Note: Ensure your email address is accurate before hitting the "Send" button.
 
-## Contributors 🔽
+## Contact Me 🔽
 
 - **LinkedIn:** [Hemant Dwivedi](https://www.linkedin.com/in/hemant-dwivedi-developer/) **Twitter** [Hemant](https://twitter.com/ordinaryhemant)
 
