@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Container, Row, Col } from 'react-bootstrap';
-import { generatePasswordApi, sentMailApi } from "../service/PasswordGeneratorApi"
+import { generatePasswordApi, sentMailApi, suggestPasswordApi } from "../service/PasswordGeneratorApi"
 import '../css/generate.css'
 
 const Generate = () => {
@@ -11,6 +11,7 @@ const Generate = () => {
     const [specialCharacter, setSpecialCharacter] = useState(false)
     const [passwordLength, setPasswordLength] = useState(8)
     const [generatedPassword, setGeneratedPassword] = useState('Configure your password')
+    const [suggestedPassword,setSuggestedPassword] = useState('');
     const [sendToEmail, setSendToEmail] = useState(false)
     const [targetEmail, setTargetEmail] = useState('')
     const [copy, setCopied] = useState('COPY')
@@ -41,6 +42,14 @@ const Generate = () => {
             .catch(error => console.error(error))
     }
 
+    function callSuggestPasswordApi(passwordLength) {
+      suggestPasswordApi(passwordLength)
+        .then((response) => setSuggestedPassword(response.data))
+        .catch((error) => console.error(error));
+  
+      return suggestedPassword;
+    }
+
     function sentMail() {
         let message = generatedPassword
         const reqData = { targetEmail, message }
@@ -69,18 +78,30 @@ const Generate = () => {
                                 <label className="bg-danger fw-bold rounded-4 py-3 px-4 mb-2" style={{fontSize: "12px", color: "white"}}>POOR</label>
                             )}
                         </div>
-                        <button
-                            className="btn btn-light shadow"
-                            onClick={() => {
-                                navigator.clipboard.writeText(generatedPassword)
-                                setCopied("COPIED")
-                                setTimeout(function() {
-                                    setCopied("COPY")
+                        <div className="d-flex justify-content-between">
+                            <button
+                                className="btn btn-light shadow"
+                                onClick={() => {
+                                navigator.clipboard.writeText(generatedPassword);
+                                setCopied("COPIED");
+                                setTimeout(function () {
+                                    setCopied("COPY");
                                 }, 1000);
-                            }}
-                        >
-                            <strong>{copy}</strong>
-                        </button>
+                                }}
+                            >
+                                <strong>{copy}</strong>
+                            </button>
+                            {settings < 4 && (
+                                <button
+                                className="btn btn-primary shadow"
+                                onClick={() => {
+                                    navigator.clipboard.writeText(callSuggestPasswordApi(passwordLength));
+                                }}
+                                >
+                                <strong>SUGGESTED PASSWORD</strong>
+                                </button>
+                            )}
+                        </div>
                         <div className="d-flex justify-content-between my-3">
                             <div className="text-capitalize">
                                 <label>password length:</label>
