@@ -15,6 +15,11 @@ public class PasswordGeneratorController {
     public String generatePassword(@RequestBody Characters characters){
         return passwordGeneratorService.generatePassword(characters);
     }
+    
+    @PostMapping("/suggest")
+    public String generateVeryStrongPassword(@RequestParam(value="passwordLength") int passwordLength) {
+    	return passwordGeneratorService.generateVeryStrongPassword(passwordLength);
+    }
 
     @PostMapping("/verifier")
     public String strengthVerifier(@RequestParam(value = "password") String password){
