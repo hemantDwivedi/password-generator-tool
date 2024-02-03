@@ -13,27 +13,30 @@ const Generate = () => {
     const [generatedPassword, setGeneratedPassword] = useState('Configure your password')
     const [sendToEmail, setSendToEmail] = useState(false)
     const [targetEmail, setTargetEmail] = useState('')
-    const [copy, setCopied] = useState('COPY')
+    const [copy, setCopied] = useState('Copy')
     const [settings, setSettings] = useState(0)
 
     useEffect(() => {
-        const characters = { capitalAlphabet, smallAlphabet, number, specialCharacter, passwordLength }
         var count = 0
-        if (characters.capitalAlphabet) {
+        if (capitalAlphabet) {
             count += 1
         }
-        if (characters.smallAlphabet) {
+        if (smallAlphabet) {
             count += 1
         }
-        if (characters.number) {
+        if (number) {
             count += 1
         }
-        if (characters.specialCharacter) {
+        if (specialCharacter) {
             count += 1
         }
         setSettings(count)
-        callGeneratePasswordApi(characters)
+        callGeneratePasswordApi({ capitalAlphabet, smallAlphabet, number, specialCharacter, passwordLength })
     }, [capitalAlphabet, smallAlphabet, number, specialCharacter, passwordLength])
+
+    function refreshPassword(){
+        callGeneratePasswordApi({ capitalAlphabet, smallAlphabet, number, specialCharacter, passwordLength })
+    }
 
     function callGeneratePasswordApi(characters) {
         generatePasswordApi(characters)
@@ -54,40 +57,51 @@ const Generate = () => {
             <Container>
                 <Row className="justify-content-center align-items-center">
                     <Col lg={5}>
-                        <div className="d-flex justify-content-between mb-4">
-                            <div className="fs-3 border-2 text-truncate text-center border-0">{generatedPassword}</div>
-                            {settings == 4 && (
-                                <label className="fw-bold rounded-4 py-3 px-4 mb-2" style={{fontSize: "12px", color: "white", backgroundColor: "#006400"}}>VERY STRONG</label>
-                            )}
-                            {settings == 3 && (
-                                <label className="bg-success fw-bold rounded-4 py-3 px-4 mb-2" style={{fontSize: "12px", color: "white"}}>STRONG</label>
-                            )}
-                            {settings == 2 && (
-                                <label className="bg-warning fw-bold rounded-4 py-3 px-4 mb-2" style={{fontSize: "12px", color: "white"}}>GOOD</label>
-                            )}
-                            {settings <= 1 && (
-                                <label className="bg-danger fw-bold rounded-4 py-3 px-4 mb-2" style={{fontSize: "12px", color: "white"}}>POOR</label>
-                            )}
+                        <div className="d-flex justify-content-between">
+                            <div className="d-flex justify-content-between border border-dark border-1 rounded-5 py-2 px-3" style={{ width: "80%" }}>
+                                <div className="d-inline-block text-truncate user-select-all" style={{ fontSize: "18px", maxWidth: "350px" }}>{generatedPassword}</div>
+                                <div className="d-flex gap-3">
+                                    {settings == 4 && (
+                                        <label className="my-auto fw-bold bg-success px-2 py-1 rounded-3 text-light" style={{ fontSize: "10px" }}>VERY STRONG</label>
+                                    )}
+                                    {settings == 3 && (
+                                        <label className="my-auto fw-bold bg-success bg-opacity-75 px-2 py-1 rounded-3 text-light" style={{ fontSize: "10px" }}>STRONG</label>
+                                    )}
+                                    {settings == 2 && (
+                                        <label className="my-auto fw-bold bg-warning px-2 py-1 rounded-3 text-light" style={{ fontSize: "10px" }}>GOOD</label>
+                                    )}
+                                    {settings <= 1 && (
+                                        <label className="my-auto bg-danger px-2 py-1 rounded-3 fw-bold" style={{ fontSize: "10px", color: "white" }}>POOR</label>
+                                    )}
+                                    <button
+                                    className="my-auto bg-white border-0"
+                                    onClick={() => refreshPassword()}
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
+                                            <path fillRule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z" />
+                                            <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <button
+                                className="bg-primary border-0 rounded-5 shadow px-4 text-light"
+                                onClick={() => {
+                                    if (!generatedPassword.startsWith("Configure")) {
+                                        navigator.clipboard.writeText(generatedPassword)
+                                        setCopied("Copied")
+                                        setTimeout(function () {
+                                            setCopied("Copy")
+                                        }, 1000);
+                                    }
+                                }}
+                            >
+                                <strong>{copy}</strong>
+                            </button>
                         </div>
-                        <button
-                            className="btn btn-light shadow"
-                            onClick={() => {
-                                navigator.clipboard.writeText(generatedPassword)
-                                setCopied("COPIED")
-                                setTimeout(function() {
-                                    setCopied("COPY")
-                                }, 1000);
-                            }}
-                        >
-                            <strong>{copy}</strong>
-                        </button>
-                        <div className="d-flex justify-content-between my-3">
-                            <div className="text-capitalize">
-                                <label>password length:</label>
-                            </div>
-                            <div className="">
+                        <div className="d-flex justify-content-between fs-5 my-3">
+                                <label>Password length:</label>
                                 <label>{passwordLength}</label>
-                            </div>
                         </div>
                         <div className="mb-4">
                             <input
@@ -100,7 +114,7 @@ const Generate = () => {
                                 onChange={(e) => setPasswordLength(e.target.value)}
                             />
                         </div>
-                        <div className="d-flex justify-content-between">
+                        <div className="d-flex justify-content-between fs-5">
                             <div className="text-capitalize">
                                 <label>Include:</label>
                             </div>
