@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Container, Row, Col } from 'react-bootstrap';
-import { generatePasswordApi, sentMailApi } from "../service/PasswordGeneratorApi"
+import { generatePasswordApi, sentMailApi, suggestPasswordApi } from "../service/PasswordGeneratorApi"
 import '../css/generate.css'
 
 const Generate = () => {
@@ -11,6 +11,7 @@ const Generate = () => {
     const [specialCharacter, setSpecialCharacter] = useState(false)
     const [passwordLength, setPasswordLength] = useState(8)
     const [generatedPassword, setGeneratedPassword] = useState('Configure your password')
+    const [suggestedPassword,setSuggestedPassword] = useState("");
     const [sendToEmail, setSendToEmail] = useState(false)
     const [targetEmail, setTargetEmail] = useState('')
     const [copy, setCopied] = useState('Copy')
@@ -43,6 +44,14 @@ const Generate = () => {
             .then(response => setGeneratedPassword(response.data))
             .catch(error => console.error(error))
     }
+
+    function callSuggestPasswordApi(passwordLength) {
+        suggestPasswordApi(passwordLength)
+          .then((response) => setSuggestedPassword(response.data))
+          .catch((error) => console.error(error));
+    
+        return suggestedPassword;
+      }
 
     function sentMail() {
         let message = generatedPassword
@@ -98,6 +107,15 @@ const Generate = () => {
                             >
                                 <strong>{copy}</strong>
                             </button>
+                            {  settings < 4 && (
+                            <button
+                            className="bg-secondary border-0 rounded-5 shadow px-4 text-light"
+                            onClick={() => {
+                                navigator.clipboard.writeText(callSuggestPasswordApi(passwordLength));
+                            }}
+                            >
+                            <strong>Suggested Password</strong>
+                            </button> )}
                         </div>
                         <div className="d-flex justify-content-between fs-5 my-3">
                                 <label>Password length:</label>
