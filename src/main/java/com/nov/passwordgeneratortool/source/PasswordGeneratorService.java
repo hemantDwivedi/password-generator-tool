@@ -46,6 +46,22 @@ public class PasswordGeneratorService {
         }
         return storePassword;
     }
+    
+    public String generateVeryStrongPassword(int passwordLength) {
+    	String charactersString = "!@#$%^&*()-_+={}[]|\\:;\"'<>,.?/ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+        String storePassword = "";
+
+        if(passwordLength < 12 ) passwordLength = getRandomIntegerValueInRange(12, 24);
+        
+        for (int i = 1; i < passwordLength; i++) {
+            int randomNum = getRandomIntegerValue(charactersString);
+
+            storePassword += String.valueOf(charactersString.charAt(randomNum));
+        }
+        return storePassword;
+        
+    }
+
 
     public String strengthVerifier(String password) {
          return getPasswordStrength(password);
@@ -105,5 +121,10 @@ public class PasswordGeneratorService {
         Random random = new Random();
         int length = charactersString.length();
         return random.nextInt(length);
+    }
+    
+    private int getRandomIntegerValueInRange(int min,int max) {
+        int length = (int)(Math.random()*((min-max)+1))+min;
+        return length;
     }
 }
