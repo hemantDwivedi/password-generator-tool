@@ -11,10 +11,11 @@ const Generate = () => {
     const [specialCharacter, setSpecialCharacter] = useState(false)
     const [passwordLength, setPasswordLength] = useState(8)
     const [generatedPassword, setGeneratedPassword] = useState('')
-    const [suggestedPassword, setSuggestedPassword] = useState("");
+    const [suggestedPassword, setSuggestedPassword] = useState("hdh#$@df010FFF");
     const [sendToEmail, setSendToEmail] = useState(false)
     const [targetEmail, setTargetEmail] = useState('')
     const [copy, setCopied] = useState('Copy')
+    const [suggestedPasswordCopy, setSuggestedPasswordCopy] = useState('Copy')
     const [settings, setSettings] = useState(0)
 
     useEffect(() => {
@@ -101,16 +102,6 @@ const Generate = () => {
                             >
                                 <strong>{copy}</strong>
                             </button>
-                            {/* {settings < 4 && (
-                                <button
-                                    className="bg-secondary border-0 rounded-5 shadow px-4 text-light"
-                                    onClick={() => {
-                                        callSuggestPasswordApi(passwordLength)
-                                        navigator.clipboard.writeText(suggestedPassword)
-                                    }}
-                                >
-                                    <strong>Suggest Password</strong>
-                                </button>)} */}
                         </div>
                         <div className="border border-1 border-dark rounded-4 p-4 mt-4">
 
@@ -224,7 +215,32 @@ const Generate = () => {
                                 }
                             </div>
                         </div>
-                    </Col></Row></Container>
+                        {
+                            settings > 0 && settings < 4 &&
+
+                            <div className="border border-dark border-1 rounded-4 py-2 text-center mt-2">
+                                <label className="fs-6 p-1 fw-bold">Password Suggestion</label>
+                                <hr />
+                                <div className="d-flex justify-content-between px-4 py-2">
+                                    <div className="fs-5 text-truncate user-select-all" style={{ maxWidth: "250px"}}>{suggestedPassword}</div>
+                                    <button
+                                        className="bg-primary border-0 rounded-5 shadow px-3 py-1 text-light"
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(suggestedPassword)
+                                            setSuggestedPasswordCopy("Copied")
+                                            setTimeout(function () {
+                                                setSuggestedPasswordCopy("Copy")
+                                            }, 1000);
+                                        }}
+                                    >
+                                        <strong>{suggestedPasswordCopy}</strong>
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </Col>
+                </Row>
+            </Container>
         </div>
     )
 }

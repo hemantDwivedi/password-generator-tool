@@ -10,7 +10,6 @@ public class PasswordGeneratorController {
     private PasswordGeneratorService passwordGeneratorService;
     @PostMapping
     public String generatePassword(@RequestBody Characters characters){
-        System.out.println(characters.getPasswordLength());
         return passwordGeneratorService.generatePassword(characters);
     }
     
