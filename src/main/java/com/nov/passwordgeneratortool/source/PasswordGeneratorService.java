@@ -39,7 +39,7 @@ public class PasswordGeneratorService {
             charactersString += specialCharactersArray;
         }
 
-        for (int i = 1; i < characters.getPasswordLength(); i++) {
+        for (int i = 1; i <= characters.getPasswordLength(); i++) {
             int randomNum = getRandomIntegerValue(charactersString);
 
             storePassword += String.valueOf(charactersString.charAt(randomNum));
@@ -53,7 +53,7 @@ public class PasswordGeneratorService {
 
         if(passwordLength < 12 ) passwordLength = getRandomIntegerValueInRange(12, 24);
         
-        for (int i = 1; i < passwordLength; i++) {
+        for (int i = 1; i <= passwordLength; i++) {
             int randomNum = getRandomIntegerValue(charactersString);
 
             storePassword += String.valueOf(charactersString.charAt(randomNum));
