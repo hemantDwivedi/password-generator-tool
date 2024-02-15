@@ -11,12 +11,19 @@ const Generate = () => {
     const [specialCharacter, setSpecialCharacter] = useState(false)
     const [passwordLength, setPasswordLength] = useState(8)
     const [generatedPassword, setGeneratedPassword] = useState('')
-    const [suggestedPassword, setSuggestedPassword] = useState("hdh#$@df010FFF");
+    const [suggestedPassword, setSuggestedPassword] = useState("");
     const [sendToEmail, setSendToEmail] = useState(false)
-    const [targetEmail, setTargetEmail] = useState('')
+    const [recipientEmail, setRecipientEmail] = useState('')
+    const [recipientName, setRecipientName] = useState('')
     const [copy, setCopied] = useState('Copy')
-    const [suggestedPasswordCopy, setSuggestedPasswordCopy] = useState('Copy')
+    const [suggestedPasswordIsCopy, setSuggestedPasswordIsCopy] = useState(false)
     const [settings, setSettings] = useState(0)
+    const [isEmailEmpty, setIsEmailEmpty] = useState(false)
+    const [isNameEmpty, setIsNameEmpty] = useState(false)
+    const [errors, setErrors] = useState({
+        name: '',
+        email: ''
+    })
 
     useEffect(() => {
         if (settings > 0) callGeneratePasswordApi({ capitalAlphabet, smallAlphabet, number, specialCharacter, passwordLength })
@@ -42,18 +49,43 @@ const Generate = () => {
             .catch(error => console.error(error))
     }
 
-    function sentMail() {
-        let message = generatedPassword
-        const reqData = { targetEmail, message }
-        sentMailApi(reqData)
-            .then(response => console.log(response))
-            .catch(error => console.error(error))
+    function sentMail(e) {
+        e.preventDefault()
+
+
+        if (validateInputs()) {
+
+            const reqData = { recipientName, recipientEmail, password: generatedPassword }
+            sentMailApi(reqData)
+                .then(response => console.log(response))
+                .catch(error => console.error(error))
+        }
     }
 
     function handleSettings(check) {
         var num = settings
         if (check) setSettings(++num)
         else setSettings(--num)
+    }
+
+    function validateInputs() {
+        let valid = true
+
+        if (recipientEmail.trim()) {
+            setIsEmailEmpty(false)
+        } else {
+            setIsEmailEmpty(true)
+            valid = false
+        }
+
+        if (recipientName.trim()) {
+            setIsNameEmpty(false)
+        } else {
+            setIsNameEmpty(true)
+            valid = false
+        }
+
+        return valid
     }
 
     return (
@@ -103,9 +135,31 @@ const Generate = () => {
                                 <strong>{copy}</strong>
                             </button>
                         </div>
-                        <div className="border border-1 border-dark rounded-4 p-4 mt-4">
+                        <div className="mt-4">
+                            {
+                                settings > 0 && settings < 4 &&
 
-                            <div className="d-flex justify-content-between fs-5 mb-3">
+                                <div className="d-flex justify-content-start gap-2 my-3">
+                                    <label className="fw-bold">Password Suggestion:</label>
+                                    <button
+                                        className="border-0 rounded-1 shadow px-3 text-dark"
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(suggestedPassword)
+                                            setSuggestedPasswordIsCopy(true)
+                                            setTimeout(function () {
+                                                setSuggestedPasswordIsCopy(false)
+                                            }, 1000);
+                                        }}
+                                    >
+                                        <strong>{suggestedPassword}</strong>
+                                    </button>
+                                    {
+                                        suggestedPasswordIsCopy &&
+                                        <div className="text-primary" style={{ fontSize: "13px", fontWeight: "bold" }}>Copied</div>
+                                    }
+                                </div>
+                            }
+                            <div className="d-flex justify-content-between fs-5 mb-3 mt-2">
                                 <label>Password length:</label>
                                 <label>{passwordLength}</label>
                             </div>
@@ -199,45 +253,45 @@ const Generate = () => {
                                 {
                                     sendToEmail
                                     &&
-                                    <div className='d-flex gap-2 mt-4 w-75 mx-auto p-0'>
-                                        <input
-                                            className='form-control border border-1 border-dark'
-                                            type="email"
-                                            placeholder='Email Address...'
-                                            name="targetEmail"
-                                            value={targetEmail}
-                                            onChange={(e) => setTargetEmail(e.target.value)}
-                                        />
-                                        <button className='btn btn-light shadow' onClick={sentMail}>
-                                            Send
-                                        </button>
+                                    <div className="d-flex gap-2 mt-2">
+                                        <div>
+                                            <input
+                                                className='form-control border border-1 border-dark'
+                                                type="text"
+                                                placeholder='Name...'
+                                                name="recipientName"
+                                                value={recipientName}
+                                                onChange={(e) => setRecipientName(e.target.value)}
+                                            />
+                                            {
+                                                isNameEmpty &&
+                                                <label className="d-flex justify-content-end text-danger rounded-2" style={{ fontSize: "11px", fontWeight: "bold" }}>required</label>
+                                            }
+                                        </div>
+                                        <div>
+                                            <input
+                                                className='form-control border border-1 border-dark'
+                                                type="email"
+                                                placeholder='Email Address...'
+                                                name="recipientEmail"
+                                                value={recipientEmail}
+                                                onChange={(e) => setRecipientEmail(e.target.value)}
+                                            />
+                                            {
+                                                isEmailEmpty &&
+                                                <label className="d-flex justify-content-end text-danger rounded-2" style={{ fontSize: "11px", fontWeight: "bold" }}>required</label>
+                                            }
+                                        </div>
+                                        <div>
+                                            <button className='btn btn-primary rounded-2 shadow' onClick={(e) => sentMail(e)}>
+                                                Send
+                                            </button>
+                                        </div>
                                     </div>
                                 }
                             </div>
                         </div>
-                        {
-                            settings > 0 && settings < 4 &&
 
-                            <div className="border border-dark border-1 rounded-4 py-2 text-center mt-2">
-                                <label className="fs-6 p-1 fw-bold">Password Suggestion</label>
-                                <hr />
-                                <div className="d-flex justify-content-between px-4 py-2">
-                                    <div className="fs-5 text-truncate user-select-all" style={{ maxWidth: "250px"}}>{suggestedPassword}</div>
-                                    <button
-                                        className="bg-primary border-0 rounded-5 shadow px-3 py-1 text-light"
-                                        onClick={() => {
-                                            navigator.clipboard.writeText(suggestedPassword)
-                                            setSuggestedPasswordCopy("Copied")
-                                            setTimeout(function () {
-                                                setSuggestedPasswordCopy("Copy")
-                                            }, 1000);
-                                        }}
-                                    >
-                                        <strong>{suggestedPasswordCopy}</strong>
-                                    </button>
-                                </div>
-                            </div>
-                        }
                     </Col>
                 </Row>
             </Container>

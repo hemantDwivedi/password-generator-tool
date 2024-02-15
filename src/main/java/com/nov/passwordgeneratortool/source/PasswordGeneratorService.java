@@ -13,57 +13,41 @@ public class PasswordGeneratorService {
     Logger logger = LoggerFactory.getLogger(getClass());
 
     String generatePassword(Characters characters) {
-        String charactersString = "";
-        String storePassword = "";
+        StringBuilder charactersString = new StringBuilder();
+        StringBuilder finalPassword = new StringBuilder();
 
-
-        String specialCharactersArray = "!@#$%^&*()-_+={}[]|\\:;\"'<>,.?/";
+        String specialCharacters = "!@#$%^&*()-_+={}[]|\\:;\"'<>,.?/";
         String capitalAlphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String smallAlphabets = "abcdefghijklmnopqrstuvwxyz";
         String numbers = "1234567890";
 
-
-        if (characters.getCapitalAlphabet()) {
-            charactersString += capitalAlphabets;
-        }
-
-        if (characters.getSmallAlphabet()) {
-            charactersString += smallAlphabets;
-        }
-
-        if (characters.getNumber()) {
-            charactersString += numbers;
-        }
-
-        if (characters.getSpecialCharacter()) {
-            charactersString += specialCharactersArray;
-        }
+        if (characters.getCapitalAlphabet()) charactersString.append(capitalAlphabets);
+        if (characters.getSmallAlphabet()) charactersString.append(smallAlphabets);
+        if (characters.getNumber()) charactersString.append(numbers);
+        if (characters.getSpecialCharacter()) charactersString.append(specialCharacters);
 
         for (int i = 1; i <= characters.getPasswordLength(); i++) {
-            int randomNum = getRandomIntegerValue(charactersString);
-
-            storePassword += String.valueOf(charactersString.charAt(randomNum));
+            int randomNum = getRandomIntegerValue(charactersString.toString());
+            finalPassword.append(charactersString.charAt(randomNum));
         }
-        return storePassword;
+        return finalPassword.toString();
     }
-    
-    public String generateVeryStrongPassword(int passwordLength) {
-    	String charactersString = "!@#$%^&*()-_+={}[]|\\:;\"'<>,.?/ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
-        String storePassword = "";
 
-        if(passwordLength < 12 ) passwordLength = getRandomIntegerValueInRange(12, 24);
-        
+    public String generatePassword(int passwordLength) {
+        String charactersString = "!@#$%^&*()-_+={}[]|\\:;\"'<>,.?/ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+        StringBuilder finalPassword = new StringBuilder();
+
+        if (passwordLength < 12) passwordLength = getRandomIntegerValue();
+
         for (int i = 1; i <= passwordLength; i++) {
             int randomNum = getRandomIntegerValue(charactersString);
-
-            storePassword += String.valueOf(charactersString.charAt(randomNum));
+            finalPassword.append(charactersString.charAt(randomNum));
         }
-        return storePassword;
-        
+        return finalPassword.toString();
     }
 
     public String strengthVerifier(String password) {
-         return getPasswordStrength(password);
+        return getPasswordStrength(password);
     }
 
     private String getPasswordStrength(String password) {
@@ -98,12 +82,12 @@ public class PasswordGeneratorService {
     }
 
     // Sending mail service project link: https://github.com/hemantDwivedi/mail-sending-service
-    void sentToMail(SentMail sentMail) {
-        if (sentMail.getTargetEmail() == null && sentMail.getMessage() == null)
+    void sendingMail(SentMail sentMail) {
+        if (sentMail.getRecipientEmail() == null && sentMail.getPassword() == null)
             throw new RuntimeException("sentMail data is null");
-        String message = "Your Master Key\n" + sentMail.getMessage();
+        String message = "Your Master Key: " + sentMail.getPassword();
 
-        sentMail.setMessage(message);
+        sentMail.setPassword(message);
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -121,9 +105,9 @@ public class PasswordGeneratorService {
         int length = charactersString.length();
         return random.nextInt(length);
     }
-    
-    private int getRandomIntegerValueInRange(int min,int max) {
-        int length = (int)(Math.random()*((max-min)+1))+min;
-        return length;
+
+    private int getRandomIntegerValue() {
+        Random random = new Random();
+        return random.nextInt(12, 24);
     }
 }

@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SentMail {
-    private String targetEmail;
-    private String message;
+    private String recipientName;
+    private String recipientEmail;
+    private String password;
 }
