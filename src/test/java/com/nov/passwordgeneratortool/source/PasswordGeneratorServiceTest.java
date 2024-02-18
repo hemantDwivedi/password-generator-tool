@@ -1,5 +1,7 @@
 package com.nov.passwordgeneratortool.source;
 
+import com.nov.passwordgeneratortool.model.Characters;
+import com.nov.passwordgeneratortool.service.PasswordGeneratorService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +25,7 @@ class PasswordGeneratorServiceTest {
 
     @Test
     void test_generateVeryStrongPassword_ExpectedResult(){
-        String genPassword = service.generateVeryStrongPassword(20);
+        String genPassword = service.generateSuggestPassword(20);
 
         assertNotNull(genPassword);
         assertEquals(20, genPassword.length());
@@ -31,7 +33,7 @@ class PasswordGeneratorServiceTest {
 
     @Test
     void test_generateVeryStrongPassword_WithSmallLength_ExpectedResult(){
-        String genPassword = service.generateVeryStrongPassword(9);
+        String genPassword = service.generateSuggestPassword(9);
 
         assertNotNull(genPassword);
         assertNotEquals(9, genPassword.length());

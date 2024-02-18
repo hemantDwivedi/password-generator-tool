@@ -1,4 +1,4 @@
-package com.nov.passwordgeneratortool.source;
+package com.nov.passwordgeneratortool.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
