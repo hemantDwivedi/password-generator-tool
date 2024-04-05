@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { Container, Row, Col } from 'react-bootstrap';
 import { generatePasswordApi, sentMailApi, suggestPasswordApi } from "../service/PasswordGeneratorApi"
 import '../css/generate.css'
+import CopyToClipboard from "react-copy-to-clipboard";
 
 const Generate = () => {
 
@@ -15,7 +16,8 @@ const Generate = () => {
     const [sendToEmail, setSendToEmail] = useState(false)
     const [recipientEmail, setRecipientEmail] = useState('')
     const [recipientName, setRecipientName] = useState('')
-    const [copy, setCopied] = useState('Copy')
+    const [passwordToCopy, setPasswordToCopy] = useState('');
+    const [copy, setCopy] = useState('COPY')
     const [suggestedPasswordIsCopy, setSuggestedPasswordIsCopy] = useState(false)
     const [settings, setSettings] = useState(0)
     const [isEmailEmpty, setIsEmailEmpty] = useState(false)
@@ -32,6 +34,10 @@ const Generate = () => {
     useEffect(() => {
         if (settings < 4 && settings > 0) callSuggestPasswordApi(passwordLength)
     }, [passwordLength, settings])
+
+    useEffect(() => {
+        setPasswordToCopy(generatedPassword)
+    }, [generatedPassword])
 
     function refreshPassword() {
         callGeneratePasswordApi({ capitalAlphabet, smallAlphabet, number, specialCharacter, passwordLength })
@@ -88,6 +94,24 @@ const Generate = () => {
         return valid
     }
 
+    const onCopyPassword = () => {
+        if (!generatedPassword.startsWith("Configure")) {
+            setCopy('COPIED')
+            setTimeout(function () {
+                setCopy("Copy")
+            }, 1000);
+        }
+    }
+
+    const onSuggestedPasswordCopy = () => {
+        if (!generatedPassword.startsWith("Configure")) {
+            setSuggestedPasswordIsCopy(true)
+            setTimeout(function () {
+                setSuggestedPasswordIsCopy(false)
+            }, 1000);
+        }
+    }
+
     return (
         <div className="center-div">
             <Container>
@@ -120,20 +144,14 @@ const Generate = () => {
                                     </button>
                                 </div>
                             </div>
-                            <button
-                                className="bg-primary border-0 rounded-5 shadow px-4 text-light"
-                                onClick={() => {
-                                    if (!generatedPassword.startsWith("Configure")) {
-                                        navigator.clipboard.writeText(generatedPassword)
-                                        setCopied("Copied")
-                                        setTimeout(function () {
-                                            setCopied("Copy")
-                                        }, 1000);
-                                    }
-                                }}
+                            <CopyToClipboard
+                                text={passwordToCopy}
+                                onCopy={onCopyPassword}
                             >
-                                <strong>{copy}</strong>
-                            </button>
+                                <button className="bg-primary border-0 rounded-5 shadow px-4 text-light">
+                                    <strong>{copy}</strong>
+                                </button>
+                            </CopyToClipboard>
                         </div>
                         <div className="mt-4">
                             {
@@ -141,18 +159,14 @@ const Generate = () => {
 
                                 <div className="d-flex justify-content-start gap-2 my-3">
                                     <label className="fw-bold">Password Suggestion:</label>
-                                    <button
-                                        className="border-0 rounded-1 shadow px-3 text-dark"
-                                        onClick={() => {
-                                            navigator.clipboard.writeText(suggestedPassword)
-                                            setSuggestedPasswordIsCopy(true)
-                                            setTimeout(function () {
-                                                setSuggestedPasswordIsCopy(false)
-                                            }, 1000);
-                                        }}
+                                    <CopyToClipboard
+                                        text={suggestedPassword}
+                                        onCopy={onSuggestedPasswordCopy}
                                     >
-                                        <strong>{suggestedPassword}</strong>
-                                    </button>
+                                        <button className="border-1 rounded-5 shadow px-4">
+                                            <strong>{suggestedPassword}</strong>
+                                        </button>
+                                    </CopyToClipboard>
                                     {
                                         suggestedPasswordIsCopy &&
                                         <div className="text-primary" style={{ fontSize: "13px", fontWeight: "bold" }}>Copied</div>
