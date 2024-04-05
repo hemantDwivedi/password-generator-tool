@@ -21,7 +21,7 @@ public class PasswordGeneratorToolApplication {
                 registry
                         .addMapping("/**")
                         .allowedMethods("*")
-                        .allowedOrigins("http://localhost:3000");
+                        .allowedOrigins("*");
             }
         };
     }
