@@ -1,30 +1,24 @@
 package com.nov.passwordgeneratortool.service;
 
 import com.nov.passwordgeneratortool.model.Characters;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.passay.CharacterRule;
+import org.passay.EnglishCharacterData;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
 @Service
 public class PasswordGeneratorService {
-
-    Logger logger = LoggerFactory.getLogger(getClass());
+    private final Random random = new Random();
 
     public String generatePassword(Characters characters) {
         StringBuilder charactersString = new StringBuilder();
         StringBuilder finalPassword = new StringBuilder();
 
-        String specialCharacters = "!@#$%^&*()-_+={}[]|\\:;\"'<>,.?/";
-        String capitalAlphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        String smallAlphabets = "abcdefghijklmnopqrstuvwxyz";
-        String numbers = "1234567890";
-
-        if (characters.getCapitalAlphabet()) charactersString.append(capitalAlphabets);
-        if (characters.getSmallAlphabet()) charactersString.append(smallAlphabets);
-        if (characters.getNumber()) charactersString.append(numbers);
-        if (characters.getSpecialCharacter()) charactersString.append(specialCharacters);
+        if (Boolean.TRUE.equals(characters.getCapitalAlphabet())) charactersString.append(new CharacterRule(EnglishCharacterData.UpperCase).getValidCharacters());
+        if (Boolean.TRUE.equals(characters.getSmallAlphabet())) charactersString.append(new CharacterRule(EnglishCharacterData.LowerCase).getValidCharacters());
+        if (Boolean.TRUE.equals(characters.getNumber())) charactersString.append(new CharacterRule(EnglishCharacterData.Digit).getValidCharacters());
+        if (Boolean.TRUE.equals(characters.getSpecialCharacter())) charactersString.append(new CharacterRule(EnglishCharacterData.Special).getValidCharacters());
 
         for (int i = 1; i <= characters.getPasswordLength(); i++) {
             int randomNum = getRandomIntegerValue(charactersString.toString());
@@ -38,11 +32,6 @@ public class PasswordGeneratorService {
         return generatePassword(getCharacters(passwordLength));
     }
 
-
-    public String strengthVerifier(String password) {
-        return getPasswordStrength(password);
-    }
-
     private Characters getCharacters(int passwordLength) {
         return Characters
                 .builder()
@@ -54,7 +43,7 @@ public class PasswordGeneratorService {
                 .build();
     }
 
-    private String getPasswordStrength(String password) {
+    public String strengthVerifier(String password) {
         String specialChars = "~`!@#$%^&*()-_=+\\|[{]};:'\",<.>/?";
         char currentCharacter;
         boolean numberPresent = false;
@@ -67,15 +56,22 @@ public class PasswordGeneratorService {
             currentCharacter = password.charAt(i);
             if (Character.isDigit(currentCharacter)) {
                 numberPresent = true;
-            } else if (Character.isUpperCase(currentCharacter)) {
+            }
+            if (Character.isUpperCase(currentCharacter)) {
                 upperCasePresent = true;
-            } else if (Character.isLowerCase(currentCharacter)) {
+            }
+            if (Character.isLowerCase(currentCharacter)) {
                 lowerCasePresent = true;
-            } else if (specialChars.contains(String.valueOf(currentCharacter))) {
+            }
+            if (specialChars.contains(String.valueOf(currentCharacter))) {
                 specialCharacterPresent = true;
             }
         }
+        
+        return getPasswordStrength(numberPresent, upperCasePresent, lowerCasePresent, specialCharacterPresent, minLength);
+    }
 
+    private static String getPasswordStrength(boolean numberPresent, boolean upperCasePresent, boolean lowerCasePresent, boolean specialCharacterPresent, boolean minLength) {
         if (numberPresent && upperCasePresent && lowerCasePresent && specialCharacterPresent && minLength)
             return "very strong";
         else if (minLength && (upperCasePresent && lowerCasePresent) && (numberPresent || specialCharacterPresent))
@@ -86,13 +82,11 @@ public class PasswordGeneratorService {
     }
 
     private int getRandomIntegerValue(String charactersString) {
-        Random random = new Random();
         int length = charactersString.length();
         return random.nextInt(length);
     }
 
     private int getRandomIntegerValue() {
-        Random random = new Random();
         return random.nextInt(12, 24);
     }
 }
