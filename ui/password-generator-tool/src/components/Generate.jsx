@@ -11,7 +11,7 @@ const Generate = () => {
     const [number, setNumber] = useState(false)
     const [specialCharacter, setSpecialCharacter] = useState(false)
     const [passwordLength, setPasswordLength] = useState(8)
-    const [generatedPassword, setGeneratedPassword] = useState('')
+    const [generatedPassword, setGeneratedPassword] = useState('MyPassword')
     const [suggestedPassword, setSuggestedPassword] = useState("");
     const [sendToEmail, setSendToEmail] = useState(false)
     const [recipientEmail, setRecipientEmail] = useState('')
@@ -117,9 +117,10 @@ const Generate = () => {
             <div className="container">
                 <div className="flex justify-center items-center">
                     <div className="lg:w-5/12">
-                        <div className="flex justify-between py-2 px-3" style={{ "width": "80%" }}>
-                            <div className="truncate select-all" style={settings > 0 ? { fontSize: "18px", maxWidth: "350px" } : { color: "red" }}>{settings > 0 ? generatedPassword : 'One character must be selected'}</div>
-                            <div className="flex gap-3">
+                        <div className="text-green-900 mb-3 font-extrabold text-5xl">
+                            {generatedPassword}
+                        </div>
+                        {/* <div className="flex gap-3">
                                 {settings == 4 && (
                                     <label className="my-auto font-bold bg-success px-2 py-1 rounded-3 text-white" style="font-size: 10px;">VERY STRONG</label>
                                 )}
@@ -132,26 +133,28 @@ const Generate = () => {
                                 {settings == 1 && (
                                     <label className="my-auto bg-danger px-2 py-1 rounded-3 font-bold" style="font-size: 10px; color: white;">POOR</label>
                                 )}
-                            </div>
-                        </div>
-                        <div className="flex gap-3">
+                            </div> */}
+                        <div className="flex gap-3 mt-5">
                             <CopyToClipboard
                                 text={passwordToCopy}
                                 onCopy={onCopyPassword}
                             >
-                                <button className="rounded-full shadow px-4 py-1 bg-green-700 text-black">
+                                <button className="rounded-full shadow px-4 py-1 bg-green-700 text-black hover:bg-green-800">
                                     <strong>{copy}</strong>
                                 </button>
                             </CopyToClipboard>
                             <button
-                                className="rounded-full shadow px-4 py-1 bg-green-700 text-black"
+                                className="rounded-full shadow px-4 py-1 bg-green-700 text-black hover:bg-green-800"
                                 onClick={() => refreshPassword()}
                             >
                                 <strong>REFRESH</strong>
                             </button>
+                            <div className="px-4 py-1 bg-green-700 text-black font-bold rounded-full">
+                                WEAK
+                            </div>
                         </div>
                     </div>
-                    <div className="mt-4">
+                    <div className="lg:w-4/12 mt-4">
                         {
                             settings > 0 && settings < 4 &&
                             <div className="flex justify-start gap-2 my-3">
@@ -174,8 +177,14 @@ const Generate = () => {
                             <label>Password length:</label>
                             <label>{passwordLength}</label>
                         </div>
-                        <div className="mb-4">
-                            <input
+                        <div className="mb-5">
+                        <input
+                        type="range"
+                        min="8" max="24" value={passwordLength}
+                        className="w-full h-1 accent-green-700 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-slate-800"
+                        onChange={(e) => setPasswordLength(e.target.value)}
+                        />
+                            {/* <input
                                 className="w-full"
                                 type="range"
                                 min="8"
@@ -183,7 +192,7 @@ const Generate = () => {
                                 name="passwordLength"
                                 value={passwordLength}
                                 onChange={(e) => setPasswordLength(e.target.value)}
-                            />
+                            /> */}
                         </div>
                         <div className="text-lg gap-y-3 grid">
                             <div className="border-2 p-3 border-gray-800 rounded-3xl">
@@ -227,10 +236,10 @@ const Generate = () => {
                             </div>
                         </div>
                         <div className="mt-4">
-                            <p className="border-b w-28 border-green-700 pb-1 mb-4">Send to Email</p>
+                            <p className="font-bold border-b w-28 border-green-700 pb-1 mb-4">Send to Email</p>
                             <div className="">
                                 <input
-                                    className="bg-slate-900 border-0 p-2 rounded-md w-full"
+                                    className="bg-slate-900 border-0 p-2 rounded-md w-full mb-4"
                                     type="text"
                                     placeholder='Name'
                                     name="recipientName"
@@ -244,7 +253,7 @@ const Generate = () => {
                             </div>
                             <div>
                                 <input
-                                    className="bg-slate-900 border-0 p-2 rounded-md "
+                                    className="bg-slate-900 border-0 p-2 rounded-md w-full mb-4"
                                     type="email"
                                     placeholder="Email Address"
                                     name="recipientEmail"
@@ -258,7 +267,7 @@ const Generate = () => {
                             </div>
                             <div>
                                 <button
-                                    className='rounded-md shadow px-4 py-2 bg-green-700 text-black font-bold'
+                                    className='rounded-md shadow px-4 py-2 bg-green-700 text-black font-bold hover:bg-green-800'
                                     onClick={() => sendToEmail()}>
                                     SEND
                                 </button>
