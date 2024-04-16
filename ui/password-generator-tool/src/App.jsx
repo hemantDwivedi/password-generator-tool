@@ -1,6 +1,4 @@
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import Generate from './components/Generate';
 import Header from './components/Header';
 
@@ -8,8 +6,10 @@ function App() {
 
   return (
     <>
-      <Header />
-      <Generate />
+      <div className="bg-slate-950 text-green-700">
+        <Header />
+        <Generate />
+      </div>
     </>
   )
 }

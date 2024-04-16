@@ -114,201 +114,159 @@ const Generate = () => {
 
     return (
         <div className="center-div">
-            <Container>
-                <Row className="justify-content-center align-items-center">
-                    <Col lg={5}>
-                        <div className="d-flex justify-content-between gap-2">
-                            <div className="d-flex justify-content-between border border-dark border-1 rounded-5 py-2 px-3" style={{ width: "80%" }}>
-                                <div className="d-inline-block text-truncate user-select-all" style={settings > 0 ? { fontSize: "18px", maxWidth: "350px" } : { color: "red" }}>{settings > 0 ? generatedPassword : 'One character must be selected'}</div>
-                                <div className="d-flex gap-3">
-                                    {settings == 4 && (
-                                        <label className="my-auto fw-bold bg-success px-2 py-1 rounded-3 text-light" style={{ fontSize: "10px" }}>VERY STRONG</label>
-                                    )}
-                                    {settings == 3 && (
-                                        <label className="my-auto fw-bold bg-success bg-opacity-75 px-2 py-1 rounded-3 text-light" style={{ fontSize: "10px" }}>STRONG</label>
-                                    )}
-                                    {settings == 2 && (
-                                        <label className="my-auto fw-bold bg-warning px-2 py-1 rounded-3 text-light" style={{ fontSize: "10px" }}>GOOD</label>
-                                    )}
-                                    {settings == 1 && (
-                                        <label className="my-auto bg-danger px-2 py-1 rounded-3 fw-bold" style={{ fontSize: "10px", color: "white" }}>POOR</label>
-                                    )}
-                                    <button
-                                        className="my-auto bg-white border-0"
-                                        onClick={() => refreshPassword()}
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
-                                            <path fillRule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z" />
-                                            <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466" />
-                                        </svg>
-                                    </button>
-                                </div>
+            <div className="container">
+                <div className="flex justify-center items-center">
+                    <div className="lg:w-5/12">
+                        <div className="flex justify-between py-2 px-3" style={{ "width": "80%" }}>
+                            <div className="truncate select-all" style={settings > 0 ? { fontSize: "18px", maxWidth: "350px" } : { color: "red" }}>{settings > 0 ? generatedPassword : 'One character must be selected'}</div>
+                            <div className="flex gap-3">
+                                {settings == 4 && (
+                                    <label className="my-auto font-bold bg-success px-2 py-1 rounded-3 text-white" style="font-size: 10px;">VERY STRONG</label>
+                                )}
+                                {settings == 3 && (
+                                    <label className="my-auto font-bold bg-success bg-opacity-75 px-2 py-1 rounded-3 text-white" style="font-size: 10px;">STRONG</label>
+                                )}
+                                {settings == 2 && (
+                                    <label className="my-auto font-bold bg-warning px-2 py-1 rounded-3 text-white" style="font-size: 10px;">GOOD</label>
+                                )}
+                                {settings == 1 && (
+                                    <label className="my-auto bg-danger px-2 py-1 rounded-3 font-bold" style="font-size: 10px; color: white;">POOR</label>
+                                )}
                             </div>
+                        </div>
+                        <div className="flex gap-3">
                             <CopyToClipboard
                                 text={passwordToCopy}
                                 onCopy={onCopyPassword}
                             >
-                                <button className="bg-primary border-0 rounded-5 shadow px-4 text-light">
+                                <button className="rounded-full shadow px-4 py-1 bg-green-700 text-black">
                                     <strong>{copy}</strong>
                                 </button>
                             </CopyToClipboard>
+                            <button
+                                className="rounded-full shadow px-4 py-1 bg-green-700 text-black"
+                                onClick={() => refreshPassword()}
+                            >
+                                <strong>REFRESH</strong>
+                            </button>
                         </div>
-                        <div className="mt-4">
-                            {
-                                settings > 0 && settings < 4 &&
-
-                                <div className="d-flex justify-content-start gap-2 my-3">
-                                    <label className="fw-bold">Password Suggestion:</label>
-                                    <CopyToClipboard
-                                        text={suggestedPassword}
-                                        onCopy={onSuggestedPasswordCopy}
-                                    >
-                                        <button className="border-1 rounded-5 shadow px-4">
-                                            <strong>{suggestedPassword}</strong>
-                                        </button>
-                                    </CopyToClipboard>
-                                    {
-                                        suggestedPasswordIsCopy &&
-                                        <div className="text-primary" style={{ fontSize: "13px", fontWeight: "bold" }}>Copied</div>
-                                    }
-                                </div>
-                            }
-                            <div className="d-flex justify-content-between fs-5 mb-3 mt-2">
-                                <label>Password length:</label>
-                                <label>{passwordLength}</label>
-                            </div>
-                            <div className="mb-4">
-                                <input
-                                    className="w-100"
-                                    type="range"
-                                    min={8}
-                                    max={24}
-                                    name="passwordLength"
-                                    value={passwordLength}
-                                    onChange={(e) => setPasswordLength(e.target.value)}
-                                />
-                            </div>
-                            <div className="d-flex justify-content-between fs-5">
-                                <div className="text-capitalize">
-                                    <label>Include:</label>
-                                </div>
-                                <div className="d-flex gap-2">
-                                    <input
-                                        className="form-check-input shadow border border-1 border-dark"
-                                        type="checkbox"
-                                        name="capitalAlphabet"
-                                        checked={capitalAlphabet}
-                                        onChange={(e) => {
-                                            setcapitalAlphabet(e.target.checked)
-                                            handleSettings(e.target.checked)
-                                        }}
-                                    />
-                                    <label>
-                                        ABC
-                                    </label>
-                                </div>
-                                <div className="d-flex gap-2">
-                                    <input
-                                        className="form-check-input shadow border border-1 border-dark"
-                                        type="checkbox"
-                                        name="smallAlphabet"
-                                        value={smallAlphabet}
-                                        onChange={(e) => {
-                                            setSmallAlphaabet(e.target.checked)
-                                            handleSettings(e.target.checked)
-                                        }}
-                                    />
-                                    <label>
-                                        abc
-                                    </label>
-                                </div>
-                                <div className="d-flex gap-2">
-                                    <input
-                                        className="form-check-input shadow border border-1 border-dark"
-                                        type="checkbox"
-                                        name="number"
-                                        checked={number}
-                                        onChange={(e) => {
-                                            setNumber(e.target.checked)
-                                            handleSettings(e.target.checked)
-                                        }}
-                                    />
-                                    <label>
-                                        123
-                                    </label>
-                                </div>
-                                <div className="d-flex gap-2">
-                                    <input
-                                        className="form-check-input shadow border border-1 border-dark"
-                                        type="checkbox"
-                                        name="specialCharacter"
-                                        checked={specialCharacter}
-                                        onChange={(e) => {
-                                            setSpecialCharacter(e.target.checked)
-                                            handleSettings(e.target.checked)
-                                        }}
-                                    />
-                                    <label>
-                                        %&*$
-                                    </label>
-                                </div>
-                            </div>
-                            <div className="mt-4">
-                                <div className='d-flex gap-2'>
-                                    <label>Send to an email?</label>
-                                    <input
-                                        className="form-check-input shadow border border-1 border-dark"
-                                        type="checkbox"
-                                        name="sendToEmail"
-                                        checked={sendToEmail}
-                                        onChange={(e) => setSendToEmail(e.target.checked)}
-                                    />
-                                </div>
+                    </div>
+                    <div className="mt-4">
+                        {
+                            settings > 0 && settings < 4 &&
+                            <div className="flex justify-start gap-2 my-3">
+                                <label className="font-bold">Password Suggestion:</label>
+                                <CopyToClipboard
+                                    text={suggestedPassword}
+                                    onCopy={onSuggestedPasswordCopy}
+                                >
+                                    <button className="border-1 rounded-5 shadow px-4">
+                                        <strong>{suggestedPassword}</strong>
+                                    </button>
+                                </CopyToClipboard>
                                 {
-                                    sendToEmail
-                                    &&
-                                    <div className="d-flex gap-2 mt-2">
-                                        <div>
-                                            <input
-                                                className='form-control border border-1 border-dark'
-                                                type="text"
-                                                placeholder='Name...'
-                                                name="recipientName"
-                                                value={recipientName}
-                                                onChange={(e) => setRecipientName(e.target.value)}
-                                            />
-                                            {
-                                                isNameEmpty &&
-                                                <label className="d-flex justify-content-end text-danger rounded-2" style={{ fontSize: "11px", fontWeight: "bold" }}>required</label>
-                                            }
-                                        </div>
-                                        <div>
-                                            <input
-                                                className='form-control border border-1 border-dark'
-                                                type="email"
-                                                placeholder='Email Address...'
-                                                name="recipientEmail"
-                                                value={recipientEmail}
-                                                onChange={(e) => setRecipientEmail(e.target.value)}
-                                            />
-                                            {
-                                                isEmailEmpty &&
-                                                <label className="d-flex justify-content-end text-danger rounded-2" style={{ fontSize: "11px", fontWeight: "bold" }}>required</label>
-                                            }
-                                        </div>
-                                        <div>
-                                            <button className='btn btn-primary rounded-2 shadow' onClick={(e) => sentMail(e)}>
-                                                Send
-                                            </button>
-                                        </div>
-                                    </div>
+                                    suggestedPasswordIsCopy &&
+                                    <div className="text-primary" style="font-size: 13px; font-weight: bold;">Copied</div>
                                 }
                             </div>
+                        }
+                        <div className="flex justify-between text-lg mb-3 mt-2">
+                            <label>Password length:</label>
+                            <label>{passwordLength}</label>
                         </div>
-
-                    </Col>
-                </Row>
-            </Container>
+                        <div className="mb-4">
+                            <input
+                                className="w-full"
+                                type="range"
+                                min="8"
+                                max="24"
+                                name="passwordLength"
+                                value={passwordLength}
+                                onChange={(e) => setPasswordLength(e.target.value)}
+                            />
+                        </div>
+                        <div className="text-lg gap-y-3 grid">
+                            <div className="border-2 p-3 border-gray-800 rounded-3xl">
+                                <label className="flex items-center me-5 cursor-pointer justify-between">
+                                    <span className="text-sm font-medium">Uppercase Letters</span>
+                                    <input type="checkbox" value="" className="sr-only peer" />
+                                    <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-red-300 dark:peer-focus:ring-green-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                                </label>
+                            </div>
+                            <div className="border-2 p-3 border-gray-800 rounded-3xl">
+                                <label className="flex items-center me-5 cursor-pointer justify-between">
+                                    <span className="text-sm font-medium">Lowercase Letters</span>
+                                    <input type="checkbox" value="" className="sr-only peer" />
+                                    <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-red-300 dark:peer-focus:ring-green-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                                </label>
+                            </div>
+                            <div className="border-2 p-3 border-gray-800 rounded-3xl">
+                                <label className="flex items-center me-5 cursor-pointer justify-between">
+                                    <span className="text-sm font-medium">Numbers</span>
+                                    <input type="checkbox" value="" className="sr-only peer" />
+                                    <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-red-300 dark:peer-focus:ring-green-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                                </label>
+                            </div>
+                            <div className="border-2 p-3 border-gray-800 rounded-3xl">
+                                {/* <input
+                                    className="form-checkbox shadow border border-1 border-black"
+                                    type="checkbox"
+                                    name="specialCharacter"
+                                    checked={specialCharacter}
+                                    onChange={(e) => {
+                                        setSpecialCharacter(e.target.checked)
+                                        handleSettings(e.target.checked)
+                                    }}
+                                />
+                                <label>%&*&#36;</label> */}
+                                <label className="flex items-center me-5 cursor-pointer justify-between">
+                                    <span className="text-sm font-medium">Symbols</span>
+                                    <input type="checkbox" value="" className="sr-only peer" />
+                                    <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-red-300 dark:peer-focus:ring-green-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                                </label>
+                            </div>
+                        </div>
+                        <div className="mt-4">
+                            <p className="border-b w-28 border-green-700 pb-1 mb-4">Send to Email</p>
+                            <div className="">
+                                <input
+                                    className="bg-slate-900 border-0 p-2 rounded-md w-full"
+                                    type="text"
+                                    placeholder='Name'
+                                    name="recipientName"
+                                    value={recipientName}
+                                    onChange={(e) => setRecipientName(e.target.value)}
+                                />
+                                {
+                                    isNameEmpty &&
+                                    <label className="flex justify-end text-danger rounded-2" style="font-size: 11px; font-weight: bold;">required</label>
+                                }
+                            </div>
+                            <div>
+                                <input
+                                    className="bg-slate-900 border-0 p-2 rounded-md "
+                                    type="email"
+                                    placeholder="Email Address"
+                                    name="recipientEmail"
+                                    value={recipientEmail}
+                                    onChange={(e) => setRecipientEmail(e.target.value)}
+                                />
+                                {
+                                    isEmailEmpty &&
+                                    <label className="flex justify-end text-danger rounded-2" style="font-size: 11px; font-weight: bold;">required</label>
+                                }
+                            </div>
+                            <div>
+                                <button
+                                    className='rounded-md shadow px-4 py-2 bg-green-700 text-black font-bold'
+                                    onClick={() => sendToEmail()}>
+                                    SEND
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
