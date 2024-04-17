@@ -13,9 +13,21 @@ public class PasswordMailService {
 
     // Sending mail service project link: https://github.com/hemantDwivedi/mail-sending-service
     public void sendingMail(SentMail sentMail) {
-        if (sentMail.getRecipientEmail() == null && sentMail.getPassword() == null)
-            throw new RuntimeException("sentMail data is null");
-        String message = "Your Master Key: " + sentMail.getPassword();
+        String message = "<html>\n" +
+                "<body>\n" +
+                "    <h2>Dear " + sentMail.getRecipientName() + ",</h2>\n" +
+                "    <p>Your new password has been generated successfully. Please find it below:</p>\n" +
+                "    <table border=\"1\">\n" +
+                "        <tr>\n" +
+                "            <th>Password:</th>\n" +
+                "            <td>" + sentMail.getPassword() + "</td>\n" +
+                "        </tr>\n" +
+                "    </table>\n" +
+                "    <p>For security reasons, we recommend changing this password after logging in.</p>\n" +
+                "    <p>Regards,<br>\n" +
+                "    DeviansVilla</p>\n" +
+                "</body>\n" +
+                "</html>";
 
         sentMail.setPassword(message);
 
