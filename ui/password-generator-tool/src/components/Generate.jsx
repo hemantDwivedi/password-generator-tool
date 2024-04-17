@@ -4,7 +4,7 @@ import { generatePasswordApi, sentMailApi, suggestPasswordApi } from "../service
 import '../css/generate.css'
 import CopyToClipboard from "react-copy-to-clipboard";
 
-const Generate = () => {
+const Generate = ({ darkMode }) => {
 
     const [capitalAlphabet, setcapitalAlphabet] = useState(false)
     const [smallAlphabet, setSmallAlphaabet] = useState(false)
@@ -117,121 +117,84 @@ const Generate = () => {
             <div className="container">
                 <div className="flex justify-center items-center">
                     <div className="lg:w-5/12">
-                        <div className="text-green-900 mb-3 font-extrabold text-5xl">
+                        <div className="flex gap-4 mb-3 font-bold text-5xl text-ellipsis">
                             {generatedPassword}
+                            <div
+                            className={(darkMode == false) ? "text-2xl text-gray-800 uppercase" :  "text-2xl text-gray-500 uppercase"}
+                            >
+                                very strong
+                            </div>
                         </div>
-                        {/* <div className="flex gap-3">
-                                {settings == 4 && (
-                                    <label className="my-auto font-bold bg-success px-2 py-1 rounded-3 text-white" style="font-size: 10px;">VERY STRONG</label>
-                                )}
-                                {settings == 3 && (
-                                    <label className="my-auto font-bold bg-success bg-opacity-75 px-2 py-1 rounded-3 text-white" style="font-size: 10px;">STRONG</label>
-                                )}
-                                {settings == 2 && (
-                                    <label className="my-auto font-bold bg-warning px-2 py-1 rounded-3 text-white" style="font-size: 10px;">GOOD</label>
-                                )}
-                                {settings == 1 && (
-                                    <label className="my-auto bg-danger px-2 py-1 rounded-3 font-bold" style="font-size: 10px; color: white;">POOR</label>
-                                )}
-                            </div> */}
-                        <div className="flex gap-3 mt-5">
+                        <div className="flex gap-3 mt-5 font-bold">
                             <CopyToClipboard
                                 text={passwordToCopy}
                                 onCopy={onCopyPassword}
                             >
-                                <button className="rounded-full shadow px-4 py-1 bg-green-700 text-black hover:bg-green-800">
-                                    <strong>{copy}</strong>
+                                <button className="rounded-full text-sm shadow px-4 py-1 bg-green-700 text-black hover:bg-green-800">
+                                    {copy}
                                 </button>
                             </CopyToClipboard>
                             <button
-                                className="rounded-full shadow px-4 py-1 bg-green-700 text-black hover:bg-green-800"
+                                className="rounded-full shadow text-sm px-4 py-1 bg-green-700 text-black hover:bg-green-800"
                                 onClick={() => refreshPassword()}
                             >
-                                <strong>REFRESH</strong>
+                                REFRESH
                             </button>
-                            <div className="px-4 py-1 bg-green-700 text-black font-bold rounded-full">
-                                WEAK
-                            </div>
+                            <CopyToClipboard
+                                text={suggestedPassword}
+                                onCopy={onSuggestedPasswordCopy}
+                            >
+                                <button className="border-1 rounded-5 shadow px-4 bg-green-700 text-black rounded-full hover:bg-green-800">
+                                    Suggest
+                                </button>
+                            </CopyToClipboard>
+                            {
+                                suggestedPasswordIsCopy &&
+                                <div className="text-primary" style="font-size: 13px; font-weight: bold;">Copied</div>
+                            }
                         </div>
                     </div>
                     <div className="lg:w-4/12 mt-4">
-                        {
-                            settings > 0 && settings < 4 &&
-                            <div className="flex justify-start gap-2 my-3">
-                                <label className="font-bold">Password Suggestion:</label>
-                                <CopyToClipboard
-                                    text={suggestedPassword}
-                                    onCopy={onSuggestedPasswordCopy}
-                                >
-                                    <button className="border-1 rounded-5 shadow px-4">
-                                        <strong>{suggestedPassword}</strong>
-                                    </button>
-                                </CopyToClipboard>
-                                {
-                                    suggestedPasswordIsCopy &&
-                                    <div className="text-primary" style="font-size: 13px; font-weight: bold;">Copied</div>
-                                }
-                            </div>
-                        }
-                        <div className="flex justify-between text-lg mb-3 mt-2">
-                            <label>Password length:</label>
-                            <label>{passwordLength}</label>
+
+                        <div className="flex justify-between mb-3 font-bold">
+                            <label className="text-sm">Characters length:</label>
+                            <label className="text-4xl">{passwordLength}</label>
                         </div>
                         <div className="mb-5">
-                        <input
-                        type="range"
-                        min="8" max="24" value={passwordLength}
-                        className="w-full h-1 accent-green-700 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-slate-800"
-                        onChange={(e) => setPasswordLength(e.target.value)}
-                        />
-                            {/* <input
-                                className="w-full"
+                            <input
                                 type="range"
-                                min="8"
-                                max="24"
-                                name="passwordLength"
-                                value={passwordLength}
+                                min="8" max="24" value={passwordLength}
+                                className="w-full h-1 accent-green-700 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-slate-800"
                                 onChange={(e) => setPasswordLength(e.target.value)}
-                            /> */}
+                            />
                         </div>
                         <div className="text-lg gap-y-3 grid">
                             <div className="border-2 p-3 border-gray-800 rounded-3xl">
                                 <label className="flex items-center me-5 cursor-pointer justify-between">
-                                    <span className="text-sm font-medium">Uppercase Letters</span>
+                                    <span className="text-sm font-bold">Uppercase Letters</span>
                                     <input type="checkbox" value="" className="sr-only peer" />
-                                    <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-red-300 dark:peer-focus:ring-green-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                                    <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-red-300 dark:peer-focus:ring-green-800 dark:bg-gray-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                                 </label>
                             </div>
                             <div className="border-2 p-3 border-gray-800 rounded-3xl">
                                 <label className="flex items-center me-5 cursor-pointer justify-between">
-                                    <span className="text-sm font-medium">Lowercase Letters</span>
+                                    <span className="text-sm font-bold">Lowercase Letters</span>
                                     <input type="checkbox" value="" className="sr-only peer" />
-                                    <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-red-300 dark:peer-focus:ring-green-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                                    <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-red-300 dark:peer-focus:ring-green-800 dark:bg-gray-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                                 </label>
                             </div>
                             <div className="border-2 p-3 border-gray-800 rounded-3xl">
                                 <label className="flex items-center me-5 cursor-pointer justify-between">
-                                    <span className="text-sm font-medium">Numbers</span>
+                                    <span className="text-sm font-bold">Numbers</span>
                                     <input type="checkbox" value="" className="sr-only peer" />
-                                    <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-red-300 dark:peer-focus:ring-green-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                                    <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-red-300 dark:peer-focus:ring-green-800 dark:bg-gray-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                                 </label>
                             </div>
                             <div className="border-2 p-3 border-gray-800 rounded-3xl">
-                                {/* <input
-                                    className="form-checkbox shadow border border-1 border-black"
-                                    type="checkbox"
-                                    name="specialCharacter"
-                                    checked={specialCharacter}
-                                    onChange={(e) => {
-                                        setSpecialCharacter(e.target.checked)
-                                        handleSettings(e.target.checked)
-                                    }}
-                                />
-                                <label>%&*&#36;</label> */}
                                 <label className="flex items-center me-5 cursor-pointer justify-between">
-                                    <span className="text-sm font-medium">Symbols</span>
+                                    <span className="text-sm font-bold">Symbols</span>
                                     <input type="checkbox" value="" className="sr-only peer" />
-                                    <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-red-300 dark:peer-focus:ring-green-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                                    <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-red-300 dark:peer-focus:ring-green-800 dark:bg-gray-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                                 </label>
                             </div>
                         </div>
@@ -239,7 +202,10 @@ const Generate = () => {
                             <p className="font-bold border-b w-28 border-green-700 pb-1 mb-4">Send to Email</p>
                             <div className="">
                                 <input
-                                    className="bg-slate-900 border-0 p-2 rounded-md w-full mb-4"
+                                    className={
+                                        (darkMode == false) ? "bg-slate-900 border-0 p-2 rounded-md w-full mb-4 font-medium" :
+                                            "bg-gray-300 border-0 p-2 rounded-md w-full mb-4 text-green-900 font-medium"
+                                    }
                                     type="text"
                                     placeholder='Name'
                                     name="recipientName"
@@ -253,7 +219,10 @@ const Generate = () => {
                             </div>
                             <div>
                                 <input
-                                    className="bg-slate-900 border-0 p-2 rounded-md w-full mb-4"
+                                    className={
+                                        (darkMode == false) ? "bg-slate-900 border-0 p-2 rounded-md w-full mb-4 font-medium" :
+                                            "bg-gray-300 border-0 p-2 rounded-md w-full mb-4 text-green-900 font-medium"
+                                    }
                                     type="email"
                                     placeholder="Email Address"
                                     name="recipientEmail"
