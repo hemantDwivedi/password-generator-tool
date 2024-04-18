@@ -8,9 +8,11 @@ const CharactersLength = ({ passwordLength, setPasswordLength }) => {
             <div className="mb-5">
                 <input
                     type="range"
-                    min="8" max="24" value={passwordLength}
-                    className="w-full h-1 accent-green-700 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-slate-800"
+                    min={8}
+                    max={24}
+                    value={passwordLength}
                     onChange={(e) => setPasswordLength(e.target.value)}
+                    className="w-full h-1 accent-green-700 bg-gray-200 rounded-lg appearance-none dark:bg-slate-800"
                 />
             </div>
         </>
