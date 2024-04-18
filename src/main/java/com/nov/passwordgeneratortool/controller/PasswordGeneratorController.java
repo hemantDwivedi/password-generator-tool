@@ -1,9 +1,11 @@
 package com.nov.passwordgeneratortool.controller;
 
 import com.nov.passwordgeneratortool.model.Characters;
+import com.nov.passwordgeneratortool.model.Password;
 import com.nov.passwordgeneratortool.model.SentMail;
 import com.nov.passwordgeneratortool.service.PasswordGeneratorService;
 import com.nov.passwordgeneratortool.service.PasswordMailService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,12 +26,12 @@ public class PasswordGeneratorController {
     }
     
     @PostMapping("/suggest")
-    public String generateVeryStrongPassword(@RequestParam(value="passwordLength") int passwordLength) {
-    	return passwordGeneratorService.generateSuggestPassword(passwordLength);
+    public String generateVeryStrongPassword() {
+    	return passwordGeneratorService.generateSuggestPassword();
     }
 
     @PostMapping("/verifier")
-    public String strengthVerifier(@RequestParam(value = "password") String password){
+    public String strengthVerifier(@RequestBody Password password){
         return passwordGeneratorService.strengthVerifier(password);
     }
 

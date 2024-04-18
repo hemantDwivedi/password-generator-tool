@@ -1,6 +1,7 @@
 package com.nov.passwordgeneratortool.service;
 
 import com.nov.passwordgeneratortool.model.Characters;
+import com.nov.passwordgeneratortool.model.Password;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.springframework.stereotype.Service;
@@ -27,9 +28,8 @@ public class PasswordGeneratorService {
         return finalPassword.toString();
     }
 
-    public String generateSuggestPassword(int passwordLength) {
-        if (passwordLength < 12) passwordLength = getRandomIntegerValue();
-        return generatePassword(getCharacters(passwordLength));
+    public String generateSuggestPassword() {
+        return generatePassword(getCharacters(getRandomIntegerValue()));
     }
 
     private Characters getCharacters(int passwordLength) {
@@ -43,17 +43,17 @@ public class PasswordGeneratorService {
                 .build();
     }
 
-    public String strengthVerifier(String password) {
+    public String strengthVerifier(Password password) {
+        String passwordString = password.getCheckPassword();
         String specialChars = "~`!@#$%^&*()-_=+\\|[{]};:'\",<.>/?";
-        char currentCharacter;
         boolean numberPresent = false;
         boolean upperCasePresent = false;
         boolean lowerCasePresent = false;
         boolean specialCharacterPresent = false;
-        boolean minLength = password.length() >= 8;
+        boolean minLength = passwordString.length() >= 8;
 
-        for (int i = 0; i < password.length(); i++) {
-            currentCharacter = password.charAt(i);
+        for (int i = 0; i < passwordString.length(); i++) {
+            char currentCharacter = passwordString.charAt(i);
             if (Character.isDigit(currentCharacter)) {
                 numberPresent = true;
             }
@@ -87,6 +87,6 @@ public class PasswordGeneratorService {
     }
 
     private int getRandomIntegerValue() {
-        return random.nextInt(12, 24);
+        return random.nextInt(16, 24);
     }
 }
