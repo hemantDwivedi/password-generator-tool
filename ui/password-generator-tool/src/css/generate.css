@@ -1,11 +1,6 @@
-label{
-  letter-spacing: 1px;
-}
-
 .center-div {
-    background-color: #fff;
-    color: #000;
     height: 100vh;
     display: flex;
     align-items: center;
+    justify-content: center;
   }
