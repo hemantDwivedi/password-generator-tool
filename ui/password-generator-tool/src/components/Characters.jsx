@@ -1,7 +1,7 @@
 const Characters = ({ title, value, setCharacter }) => {
     return (
         <>
-            <div className="border-2 p-3 border-gray-800 rounded-3xl">
+            <div className="border-2 p-3 border-gray-800 rounded-full">
                 <label className="flex items-center me-5 cursor-pointer justify-between">
                     <span className="text-sm font-bold capitalize">
                         {title}

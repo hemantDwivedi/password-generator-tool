@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { sentMailApi } from "../service/PasswordGeneratorApi"
 
-const SendMail = ({ darkMode }) => {
+const SendMail = ({ darkMode, generatedPassword }) => {
 
     const [recipientEmail, setRecipientEmail] = useState('')
     const [recipientName, setRecipientName] = useState('')

@@ -5,7 +5,7 @@ const CharactersLength = ({ passwordLength, setPasswordLength }) => {
                 <label className="text-sm">Characters length:</label>
                 <label className="text-4xl">{passwordLength}</label>
             </div>
-            <div className="mb-5">
+            <div className="mb-10 md:mb-5">
                 <input
                     type="range"
                     min={8}

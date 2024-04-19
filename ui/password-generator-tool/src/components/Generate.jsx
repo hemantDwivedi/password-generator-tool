@@ -78,19 +78,19 @@ const Generate = ({ darkMode }) => {
     }
 
     return (
-        <div className="center-div">
+        <div className="flex justify-center items-center min-h-screen">
             <div className="container">
-                <div className="flex justify-center items-center">
-                    <div className="lg:w-5/12">
+                <div className="md:flex justify-center items-center p-5 md:p-0">
+                    <div className="lg:w-5/12 mb-10 md:mb-0">
                         <div
-                            className={(darkMode == false) ? "text-2xl text-gray-800 uppercase w-full font-bold" : "text-2xl text-gray-500 font-bold uppercase"}
+                            className={(darkMode == false) ? "md:text-2xl text-gray-800 uppercase w-full font-bold" : "md:text-2xl text-gray-500 font-bold uppercase"}
                         >
                             {strength}
                         </div>
-                        <div className="mb-3 font-bold text-5xl w-9/12 truncate">
+                        <div className="mb-3 font-bold text-3xl md:text-5xl w-9/12 truncate">
                             {generatedPassword}
                         </div>
-                        <div className="flex gap-3 mt-5 font-bold">
+                        <div className="flex gap-1 md:gap-2 mt-5 font-bold">
                             <CopyToClipboard
                                 text={passwordToCopy}
                                 onCopy={onCopyPassword}
@@ -119,15 +119,15 @@ const Generate = ({ darkMode }) => {
                             </CopyToClipboard>
                         </div>
                     </div>
-                    <div className="lg:w-4/12 mt-4">
+                    <div className="lg:w-4/12">
                         <CharactersLength passwordLength={passwordLength} setPasswordLength={setPasswordLength} />
-                        <div className="text-lg gap-y-3 grid">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5">
                             <Characters title="uppercase letters" value={capitalAlphabet} setCharacter={setCapitalAlphabet} />
                             <Characters title="lowercase letters" value={smallAlphabet} setCharacter={setSmallAlphabet} />
                             <Characters title="numbers" value={number} setCharacter={setNumber} />
                             <Characters title="symbols" value={specialCharacter} setCharacter={setSpecialCharacter} />
                         </div>
-                        <SendMail darkMode={darkMode} />
+                        <SendMail darkMode={darkMode} generatedPassword={generatedPassword} />
                     </div>
                 </div>
             </div>
