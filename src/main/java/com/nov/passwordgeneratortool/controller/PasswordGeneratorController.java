@@ -2,10 +2,9 @@ package com.nov.passwordgeneratortool.controller;
 
 import com.nov.passwordgeneratortool.model.Characters;
 import com.nov.passwordgeneratortool.model.Password;
-import com.nov.passwordgeneratortool.model.SentMail;
+import com.nov.passwordgeneratortool.model.MailRequest;
 import com.nov.passwordgeneratortool.service.PasswordGeneratorService;
 import com.nov.passwordgeneratortool.service.PasswordMailService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,7 +35,7 @@ public class PasswordGeneratorController {
     }
 
     @PostMapping("/mail")
-    public void sendToEmail(@RequestBody SentMail sentMail){
-        mailService.sendingMail(sentMail);
+    public void sendToEmail(@RequestBody MailRequest mailRequest){
+        mailService.sendingMail(mailRequest);
     }
 }

@@ -1,24 +1,35 @@
 import { useState } from "react"
 import { sentMailApi } from "../service/PasswordGeneratorApi"
 
-const SendMail = ({ darkMode }) => {
+const SendMail = ({ darkMode, generatedPassword }) => {
 
     const [recipientEmail, setRecipientEmail] = useState('')
     const [recipientName, setRecipientName] = useState('')
     const [isEmailEmpty, setIsEmailEmpty] = useState(false)
     const [isNameEmpty, setIsNameEmpty] = useState(false)
+    const [sendText, setSendText] = useState('send')
+    const [status, setStatus] = useState()
 
     function sentMail(e) {
         e.preventDefault()
+        setSendText('validating...')
 
 
         if (validateInputs()) {
-
-            const reqData = { recipientName, recipientEmail, password: generatedPassword }
+            setSendText('sending...')
+            const reqData = { name: recipientName, email: recipientEmail, password: generatedPassword }
             sentMailApi(reqData)
-                .then(response => console.log(response))
+                .then(response => {
+                    if (response.status === 200) {
+                        setSendText('done')
+                        setTimeout(function () {
+                            setSendText("send")
+                        }, 2000);
+                    }
+                })
                 .catch(error => console.error(error))
         }
+
     }
 
     function validateInputs() {
@@ -81,9 +92,9 @@ const SendMail = ({ darkMode }) => {
                 </div>
                 <div>
                     <button
-                        className='mt-2 rounded-md shadow px-4 py-2 bg-green-700 text-black font-bold hover:bg-green-800'
+                        className='mt-2 rounded-md shadow px-4 py-2 bg-green-700 text-black font-bold hover:bg-green-800 capitalize'
                         onClick={(e) => sentMail(e)}>
-                        SEND
+                        {sendText}
                     </button>
                 </div>
             </div>

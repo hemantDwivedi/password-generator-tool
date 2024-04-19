@@ -1,7 +1,7 @@
 const Header = ({ handleOnClick }) => {
     return (
         <div>
-            <nav className="fixed w-full z-50 py-4">
+            <nav className="md:fixed w-full z-50 py-4 mb-5 md:md-0">
                 <div className="container-fluid px-4 mx-auto flex justify-between items-center">
                     <p className="font-bold text-2xl">RPG</p>
                     <ul className="flex space-x-4">

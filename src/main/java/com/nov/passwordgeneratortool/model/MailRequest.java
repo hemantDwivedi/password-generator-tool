@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SentMail {
-    private String recipientName;
-    private String recipientEmail;
+public class MailRequest {
+    private String name;
+    private String email;
     private String password;
 }
