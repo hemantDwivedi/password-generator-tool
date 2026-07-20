@@ -3,7 +3,6 @@ import error from '../assets/error.svg'
 import { generatePasswordApi, passwordStrengthVerifier, suggestPasswordApi } from "../service/PasswordGeneratorApi"
 import Characters from './Characters';
 import CharactersLength from './CharactersLength';
-import SendMail from './SendMail';
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useState, useEffect } from "react"
 
@@ -21,6 +20,14 @@ const Generate = ({ darkMode }) => {
     const [suggestedPasswordCopy, setSuggestedPasswordCopy] = useState('suggest')
     const [strength, setStrength] = useState('poor')
     const [serverDown, setServerDown] = useState(false)
+    const [noCharacterSelected, setNoCharacterSelected] = useState(false)
+
+    const strengthMeter = {
+        poor: { width: '25%', color: 'bg-red-600' },
+        good: { width: '50%', color: 'bg-yellow-500' },
+        strong: { width: '75%', color: 'bg-blue-500' },
+        'very strong': { width: '100%', color: 'bg-green-600' },
+    }
 
 
     useEffect(() => {
@@ -52,9 +59,12 @@ const Generate = ({ darkMode }) => {
 
     function callGeneratePasswordApi(characters) {
         if (characters.capitalAlphabet == true || characters.smallAlphabet == true || characters.number == true || characters.specialCharacter == true) {
+            setNoCharacterSelected(false)
             generatePasswordApi(characters)
                 .then(response => setGeneratedPassword(response.data))
                 .catch(error => console.error(error))
+        } else {
+            setNoCharacterSelected(true)
         }
     }
 
@@ -92,10 +102,16 @@ const Generate = ({ darkMode }) => {
                                 >
                                     {strength}
                                 </div>
-                                <div className="mb-3 font-bold text-3xl md:text-5xl w-9/12 truncate">
+                                <div className="w-full max-w-xs h-1.5 rounded-full bg-gray-700/40 overflow-hidden mt-2">
+                                    <div
+                                        className={`h-full rounded-full transition-all duration-300 ${strengthMeter[strength]?.color || 'bg-gray-500'}`}
+                                        style={{ width: strengthMeter[strength]?.width || '0%' }}
+                                    />
+                                </div>
+                                <div className="mb-3 mt-2 font-bold text-3xl md:text-5xl leading-snug pb-1 w-9/12 truncate">
                                     {generatedPassword}
                                 </div>
-                                <div className="flex gap-1 md:gap-2 mt-5 font-bold">
+                                <div className="flex flex-wrap gap-1 md:gap-2 mt-5 font-bold">
                                     <CopyToClipboard
                                         text={passwordToCopy}
                                         onCopy={onCopyPassword}
@@ -132,7 +148,10 @@ const Generate = ({ darkMode }) => {
                                     <Characters title="numbers" value={number} setCharacter={setNumber} />
                                     <Characters title="symbols" value={specialCharacter} setCharacter={setSpecialCharacter} />
                                 </div>
-                                <SendMail darkMode={darkMode} generatedPassword={generatedPassword} />
+                                {
+                                    noCharacterSelected &&
+                                    <p className="text-red-500 text-sm mt-2">Select at least one character type</p>
+                                }
                             </div>
                         </div>
                     </div>

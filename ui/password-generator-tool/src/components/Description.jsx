@@ -1,10 +1,14 @@
-const Description = () => {
+const Description = ({ darkMode }) => {
     return (
-        <div>
-            <div className="d-flex px-5 text-justify justify-content-center align-items-center vh-100">
-                <p className="w-50 title-head display-2"><span className="fw-bold font-monospace">Random</span> Password Generator</p>
-                <p className="sub-description w-50">
-                    Introducing our Random Password Generator – Your Key to Strong, Secure Passwords! Say goodbye to weak passwords and enhance your online security effortlessly. Customize your passwords with a click, including uppercase letters, lowercase letters, numbers, and special characters. Elevate your digital defense with ease and style!
+        <div className="flex justify-center px-4 pt-4 md:pt-28 pb-4 text-center">
+            <div className="max-w-2xl">
+                <p className="font-mono font-bold text-3xl md:text-5xl mb-4">
+                    Random Password Generator
+                </p>
+                <p className={(darkMode == false) ? "text-gray-400" : "text-gray-600"}>
+                    Say goodbye to weak passwords and enhance your online security effortlessly.
+                    Customize your passwords with a click, including uppercase letters, lowercase
+                    letters, numbers, and special characters.
                 </p>
             </div>
         </div>
